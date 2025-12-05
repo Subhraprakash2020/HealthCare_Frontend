@@ -1,0 +1,42 @@
+.btn-custom-green,
+.btn-outline-custom-green {
+    transition: all 0.3s ease-in-out;
+}
+
+.btn-custom-green {
+    background-color: #8dc63f !important;
+    border-color: #8dc63f !important;
+    color: white !important;
+}
+
+.btn-custom-green:hover {
+    background-color: #6a9531 !important;
+    border-color: #6a9531 !important;
+}
+
+.btn-outline-custom-green {
+    color: #8dc63f !important;
+    border-color: #8dc63f !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-custom-green:hover {
+    background-color: #8dc63f !important;
+    color: white !important;
+}
+
+.btn-custom-green:focus,
+.btn-outline-custom-green:focus {
+    box-shadow: 0 0 0 0.25rem rgba(141, 198, 63, 0.5) !important;
+}
+
+.text-custom-green {
+  color: #8dc63f !important;
+}
+
+.input-bg {
+    background-color: #eaf0ff !important;
+    border: 1px solid #d6ddf5 !important;
+    padding: 10px;
+    border-radius: 8px;
+}
