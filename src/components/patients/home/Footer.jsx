@@ -2,6 +2,10 @@ import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaLinkedin } from 'react-icons/fa';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
+
 
 function Footer() {
   return (
@@ -11,15 +15,31 @@ function Footer() {
           <Col md={6}>
             <h5 className="text-uppercase">Your Company Name</h5>
             <div className="contact-info">
-              <p>Email: <a href="mailto:info@yourcompany.com" className="text-white">info@yourcompany.com</a></p>
-              <p>Phone: +1 (123) 456-7890</p>
+              <p>
+                <FontAwesomeIcon icon={faEnvelope} className="me-2 text-white" />
+                <a href="mailto:info@yourcompany.com" className="text-white ms-1">
+                  info@yourcompany.com
+                </a>
+              </p>
+
+              <p>
+                <FontAwesomeIcon icon={faPhone} className="me-2 text-white" />
+                +1 (123) 456-7890
+              </p>
+
               <p className="d-flex align-items-center">
-                LinkedIn:
-                <a href="https://www.linkedin.com" target="_blank" rel="noopener noreferrer" className="ms-2">
-                  <FaLinkedin size={24} color="#0A66C2" />
+                <FontAwesomeIcon icon={faLinkedin} className="me-2 test-white" />
+                <a
+                  href="https://www.linkedin.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ms-2"
+                >
+                  Visit Profile
                 </a>
               </p>
             </div>
+
           </Col>
           <Col md={6}>
             <h5 className="text-uppercase">Quick Links</h5>

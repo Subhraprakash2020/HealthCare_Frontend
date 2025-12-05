@@ -7,6 +7,8 @@ import Home from './components/patients/home/Home';
 import './App.css';
 import { Form } from 'react-bootstrap';
 import './css/custom.css';
+import ProtectedRoute from './ProtectedRoute';
+import Dashboard from './components/patients/layout/Dashboard';
 
 class App extends Component {
   render(){
@@ -16,6 +18,11 @@ class App extends Component {
           <Route path='/' element={<Home/>}/>
           <Route path="/signin" element={<SignIn/>}/>
           <Route path="/signup" element={<SignUp/>}/>
+          <Route path="/patient/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard/>
+            </ProtectedRoute>
+          }/>
         </Routes>
      
       </BrowserRouter>
