@@ -157,7 +157,7 @@ function Dashboard() {
                   )
                 })}
 
-             </Form.Select>
+              </Form.Select>
             </Col>
           </Row>
 
