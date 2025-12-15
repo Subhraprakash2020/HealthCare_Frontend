@@ -9,6 +9,7 @@ import { Form } from 'react-bootstrap';
 import './css/custom.css';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/patients/layout/Dashboard';
+import SearchResults from './components/patients/layout/SearchResults';
 
 class App extends Component {
   render(){
@@ -21,6 +22,11 @@ class App extends Component {
           <Route path="/patient/dashboard" element={
             <ProtectedRoute>
               <Dashboard/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/provider-search-results" element={
+            <ProtectedRoute>
+              <SearchResults/>
             </ProtectedRoute>
           }/>
         </Routes>
