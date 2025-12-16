@@ -40,3 +40,66 @@
     padding: 10px;
     border-radius: 8px;
 }
+
+.profile-dropdown-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.profile-avatar {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border: 2px solid #79b207;
+}
+
+.profile-name {
+  color: #fff;
+  font-weight: 500;
+  line-height: 1;
+
+}
+
+.navbar .dropdown-toggle::after {
+  margin-left: 6px;
+  vertical-align: middle;
+  top: 1px;
+  display: inline;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+.dropdown-two-column .dropdown-menu {
+  column-count: 2;
+  column-gap: 20px;
+  column-rule: 1px solid #dee2e6;
+  min-width: 300px;
+  padding: 10px;
+}
+
+.dropdown-two-column .dropdown-item {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.dropdown-two-column .dropdown-divider {
+  column-span: all;
+  margin: 10px 0;
+}
+
+.dropdown-logout-center {
+  text-align: center;
+  display: block;
+}
+
+.home-background {
+  background-color: rgb(17, 24, 39);
+  color: white;
+  margin: 0;
+  padding: 20px;
+}
+

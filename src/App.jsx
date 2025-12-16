@@ -10,6 +10,7 @@ import './css/custom.css';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/patients/layout/Dashboard';
 import SearchResults from './components/patients/layout/SearchResults';
+import ProfileEdit from './components/patients/layout/ProfileEdit';
 
 class App extends Component {
   render(){
@@ -29,7 +30,13 @@ class App extends Component {
               <SearchResults/>
             </ProtectedRoute>
           }/>
+          <Route path="/profile/edit" element={
+            <ProtectedRoute>
+              <ProfileEdit/>
+            </ProtectedRoute>
+          }/>
         </Routes>
+
      
       </BrowserRouter>
     )
