@@ -41,7 +41,6 @@
     border-radius: 8px;
 }
 
-/* ====== Profile dropdown title (IMPORTANT) ====== */
 .profile-dropdown-title {
   display: inline-flex;
   align-items: center;
@@ -49,7 +48,6 @@
   white-space: nowrap;
 }
 
-/* Avatar */
 .profile-avatar {
   width: 32px;
   height: 32px;
@@ -57,22 +55,19 @@
   border: 2px solid #79b207;
 }
 
-/* Username text */
 .profile-name {
   color: #fff;
   font-weight: 500;
-  line-height: 1;        /* ⬅ helps vertical centering */
+  line-height: 1;
 
 }
 
-/* Fix dropdown arrow position */
 .navbar .dropdown-toggle::after {
   margin-left: 6px;
   vertical-align: middle;
   top: 1px;
+  display: inline;
 }
-
-/* ====== Your existing styles (unchanged) ====== */
 
 .flex-grow-1 {
   flex-grow: 1;
@@ -108,7 +103,3 @@
   padding: 20px;
 }
 
-.dropdown.show .dropdown-toggle::after {
-  transform: rotate(180deg);
-  transition: transform 0.2s ease;
-}

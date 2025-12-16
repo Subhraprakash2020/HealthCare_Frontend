@@ -1,10 +1,12 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect, useContext } from "react";
 import Cropper from "react-easy-crop";
 import { Row, Col, Card, Button } from "react-bootstrap";
 import { getCroppedImg } from "../../../utils/cropImage.js";
 import "../../../css/profile.css";
 import Header from "./Header.jsx";
 import Footer from "../home/Footer.jsx";
+import axios from "axios";
+import { ProfileContext } from "./ProfileContext.jsx";
 
 function ProfileEdit() {
   const [imageSrc, setImageSrc] = useState(null);
@@ -12,6 +14,10 @@ function ProfileEdit() {
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [existingImage, setExistingImage] = useState(null);
+  const token = localStorage.getItem("token");
+  const { setProfileImage } = useContext(ProfileContext);
+  const [successMessage, setSuccessMessage] = useState("");
 
   const onCropComplete = useCallback((_, croppedPixels) => {
     setCroppedAreaPixels(croppedPixels);
@@ -31,6 +37,26 @@ function ProfileEdit() {
     reader.readAsDataURL(file);
   };
 
+  useEffect(() =>{
+    if (!token) return;
+
+    axios.get("http://localhost:8080/healthcare/patient/profile-image/profile", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then((res) =>{
+        if (res.data.imageUrl) {
+            const freshUrl = `${res.data.imageUrl}?t=${Date.now()}`;
+            setExistingImage(freshUrl);
+            setProfileImage(freshUrl);
+        }
+    })
+    .catch(()=>{
+        console.log("No existing image");
+    })
+  }, [token, setProfileImage])
+
   const handleUpload = async () => {
     try {
       setUploading(true);
@@ -41,14 +67,27 @@ function ProfileEdit() {
       );
 
       const formData = new FormData();
-      formData.append("file", croppedBlob);
+      formData.append("image", croppedBlob);
 
-      // 🔐 Example API call
-      // await axios.post("/api/profile/upload", formData, {
-      //   headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-      // });
+      const res = await axios.post(
+        "http://localhost:8080/healthcare/patient/profile-image/upload-profile",
+        formData,
+        {
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "multipart/form-data"
+            }
+        }
+      );
 
-      alert("Profile image uploaded successfully!");
+      const freshUrl = `${res.data.imageUrl}?t=${Date.now()}`;
+
+      setExistingImage(freshUrl);
+      setProfileImage(freshUrl);
+      setImageSrc(null);
+
+      setSuccessMessage("Profile image uploaded successfully!");
+      setTimeout(() => setSuccessMessage(""), 3000);
     } catch (err) {
       console.error(err);
       alert("Upload failed");
@@ -64,12 +103,11 @@ function ProfileEdit() {
         <Row>
           <Col md={4}>
             <Card className="p-3 text-center">
-              <p className="text-muted fw-semibold">Profile Picture not set</p>
-
+              <p className="text-muted fw-semibold">Profile Picture</p>
               <div className="avatar-wrapper mx-auto mb-3">
                 <img
                   src={
-                    imageSrc ||
+                    imageSrc || existingImage ||
                   "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                   }
                   alt="profile"
@@ -98,58 +136,68 @@ function ProfileEdit() {
           {/* RIGHT PANEL */}
           <Col md={8}>
             <Card className="p-4 preview-box">
-              {!imageSrc ? (
-                <div className="text-center text-muted">
-                  <p>No Picture</p>
-                  <img
-                    src="https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                    alt="empty"
-                    className="preview-placeholder"
-                  />
-                </div>
-              ) : (
-                <>
-                  {/* Cropper */}
-                  <div className="crop-container">
-                    <Cropper
-                      image={imageSrc}
-                      crop={crop}
-                      zoom={zoom}
-                      aspect={1}
-                      onCropChange={setCrop}
-                      onZoomChange={setZoom}
-                      onCropComplete={onCropComplete}
-                    />
-                  </div>
 
-                  {/* Zoom */}
-                  <div className="mt-3">
+                {/* ✅ SUCCESS MESSAGE – ALWAYS VISIBLE */}
+                {successMessage && (
+                <div className="alert alert-success mb-3">
+                    {successMessage}
+                </div>
+                )}
+
+                {!imageSrc ? (
+                <div className="text-center text-muted">
+                    <p>{existingImage ? "Current Picture" : "No Picture"}</p>
+                    <img
+                    src={
+                        existingImage ||
+                        "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                    }
+                    alt="preview"
+                    className="preview-placeholder"
+                    />
+                </div>
+                ) : (
+                <>
+                    {/* Cropper */}
+                    <div className="crop-container">
+                    <Cropper
+                        image={imageSrc}
+                        crop={crop}
+                        zoom={zoom}
+                        aspect={1}
+                        onCropChange={setCrop}
+                        onZoomChange={setZoom}
+                        onCropComplete={onCropComplete}
+                    />
+                    </div>
+
+                    {/* Zoom */}
+                    <div className="mt-3">
                     <label>Zoom</label>
                     <input
-                      type="range"
-                      min={1}
-                      max={3}
-                      step={0.1}
-                      value={zoom}
-                      onChange={(e) => setZoom(e.target.value)}
-                      className="form-range"
+                        type="range"
+                        min={1}
+                        max={3}
+                        step={0.1}
+                        value={zoom}
+                        onChange={(e) => setZoom(e.target.value)}
+                        className="form-range"
                     />
-                  </div>
+                    </div>
 
-                  {/* Upload Button */}
-                  <div className="text-end mt-3">
+                    <div className="text-end mt-3">
                     <Button
-                      variant="success"
-                      disabled={uploading}
-                      onClick={handleUpload}
+                        variant="success"
+                        disabled={uploading}
+                        onClick={handleUpload}
                     >
-                      {uploading ? "Uploading..." : "Upload"}
+                        {uploading ? "Uploading..." : "Upload"}
                     </Button>
-                  </div>
+                    </div>
                 </>
-              )}
+                )}
             </Card>
-          </Col>
+            </Col>
         </Row>
       </div>
       <Footer></Footer>

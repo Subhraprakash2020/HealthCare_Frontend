@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Navbar, Container, Nav, NavDropdown, Image as RBImage } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "../../../css/custom.css";
+import { ProfileContext } from "./ProfileContext";
 
 
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const { profileImage, setProfileImage } = useContext(ProfileContext);
 
   const [profile, setProfile] = useState({
     firstName: "",
@@ -39,6 +41,9 @@ function Header() {
           lastName: res.data.lastName,
           imageUrl: res.data.imageUrl
         });
+        if(res.data.imageUrl){
+          setProfileImage(res.data.imageUrl);
+        }
       })
       .catch(() => {
         console.warn("Profile not loaded");
@@ -51,7 +56,7 @@ function Header() {
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand as={Link} to="/">
+        <Navbar.Brand as={Link} to="/patient/dashboard">
           Your Brand
         </Navbar.Brand>
 
@@ -71,7 +76,7 @@ function Header() {
                 <span className="profile-dropdown-title">
                   <RBImage
                     src={
-                      profile.imageUrl ||
+                      profileImage || profile.imageUrl ||
                       "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                     }
                     roundedCircle
