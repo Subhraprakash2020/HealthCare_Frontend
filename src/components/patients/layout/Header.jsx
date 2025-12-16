@@ -48,7 +48,7 @@ function Header() {
       .catch(() => {
         console.warn("Profile not loaded");
       });
-  }, [token]);
+  }, [token, setProfileImage]);
 
   const user = JSON.parse(localStorage.getItem("user"));
   const fullName = user ? `${user.firstName} ${user.lastName}` : "User Profile";

@@ -41,20 +41,20 @@ function ProfileEdit() {
     if (!token) return;
 
     axios.get("http://localhost:8080/healthcare/patient/profile-image/profile", {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
     })
-    .then((res) =>{
+      .then((res) =>{
         if (res.data.imageUrl) {
-            const freshUrl = `${res.data.imageUrl}?t=${Date.now()}`;
-            setExistingImage(freshUrl);
-            setProfileImage(freshUrl);
+          const freshUrl = `${res.data.imageUrl}?t=${Date.now()}`;
+          setExistingImage(freshUrl);
+          setProfileImage(freshUrl);
         }
-    })
-    .catch(()=>{
+      })
+      .catch(()=>{
         console.log("No existing image");
-    })
+      })
   }, [token, setProfileImage])
 
   const handleUpload = async () => {
@@ -73,10 +73,10 @@ function ProfileEdit() {
         "http://localhost:8080/healthcare/patient/profile-image/upload-profile",
         formData,
         {
-            headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "multipart/form-data"
-            }
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
+          }
         }
       );
 
@@ -137,67 +137,67 @@ function ProfileEdit() {
           <Col md={8}>
             <Card className="p-4 preview-box">
 
-                {/* ✅ SUCCESS MESSAGE – ALWAYS VISIBLE */}
-                {successMessage && (
+              {/* ✅ SUCCESS MESSAGE – ALWAYS VISIBLE */}
+              {successMessage && (
                 <div className="alert alert-success mb-3">
-                    {successMessage}
+                  {successMessage}
                 </div>
-                )}
+              )}
 
-                {!imageSrc ? (
+              {!imageSrc ? (
                 <div className="text-center text-muted">
-                    <p>{existingImage ? "Current Picture" : "No Picture"}</p>
-                    <img
+                  <p>{existingImage ? "Current Picture" : "No Picture"}</p>
+                  <img
                     src={
-                        existingImage ||
+                      existingImage ||
                         "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                     }
                     alt="preview"
                     className="preview-placeholder"
-                    />
+                  />
                 </div>
-                ) : (
+              ) : (
                 <>
-                    {/* Cropper */}
-                    <div className="crop-container">
+                  {/* Cropper */}
+                  <div className="crop-container">
                     <Cropper
-                        image={imageSrc}
-                        crop={crop}
-                        zoom={zoom}
-                        aspect={1}
-                        onCropChange={setCrop}
-                        onZoomChange={setZoom}
-                        onCropComplete={onCropComplete}
+                      image={imageSrc}
+                      crop={crop}
+                      zoom={zoom}
+                      aspect={1}
+                      onCropChange={setCrop}
+                      onZoomChange={setZoom}
+                      onCropComplete={onCropComplete}
                     />
-                    </div>
+                  </div>
 
-                    {/* Zoom */}
-                    <div className="mt-3">
+                  {/* Zoom */}
+                  <div className="mt-3">
                     <label>Zoom</label>
                     <input
-                        type="range"
-                        min={1}
-                        max={3}
-                        step={0.1}
-                        value={zoom}
-                        onChange={(e) => setZoom(e.target.value)}
-                        className="form-range"
+                      type="range"
+                      min={1}
+                      max={3}
+                      step={0.1}
+                      value={zoom}
+                      onChange={(e) => setZoom(e.target.value)}
+                      className="form-range"
                     />
-                    </div>
+                  </div>
 
-                    <div className="text-end mt-3">
+                  <div className="text-end mt-3">
                     <Button
-                        variant="success"
-                        disabled={uploading}
-                        onClick={handleUpload}
+                      variant="success"
+                      disabled={uploading}
+                      onClick={handleUpload}
                     >
-                        {uploading ? "Uploading..." : "Upload"}
+                      {uploading ? "Uploading..." : "Upload"}
                     </Button>
-                    </div>
+                  </div>
                 </>
-                )}
+              )}
             </Card>
-            </Col>
+          </Col>
         </Row>
       </div>
       <Footer></Footer>
