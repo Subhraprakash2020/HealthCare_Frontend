@@ -3,6 +3,7 @@ import Header from './Header'
 import Footer from './Footer';
 import { Container, Form, Button, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import Message from '../../common/Message';
 
 function SignUp() {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ function SignUp() {
     address: "",
     password: "",
   })
+
+  const [message, setMessage] = useState(null);
+  const [variant, setVariant] = useState("success");
 
   const handleChange = (e) =>{
     setFormData({
@@ -34,13 +38,23 @@ function SignUp() {
         body: JSON.stringify(formData),
       });
 
-      const result = await respone.json();
+      let result = null;
+      try {
+        result = await respone.json();
+      } catch {
+        result = { message: "Invalid email or password!" };
+      }
 
       if(respone.ok){
-        navigate("/patient/dsahboard");
+        localStorage.setItem("token", result.accessToken || "");
+        localStorage.setItem("user", JSON.stringify(result));
+        sessionStorage.setItem("signUpMessage", "Signup successful!");
+        navigate("/patient/dashboard");
       }
       else{
-        alert(result.message || "Signup failed!");
+        setVariant("danger");
+        setMessage(result.message || "Signup failed");
+        setTimeout(() => setMessage(null), 3000);
       }
     }
     catch (error){
@@ -51,6 +65,13 @@ function SignUp() {
   return (
     <>
       <Header />
+      {message && (
+        <Message
+          variant={variant}
+          message={message}
+          onClose={() => setMessage(null)}
+        />
+      )}
       <Container className="mt-5">
         <Row className="justify-content-center">
           <Col md={6} lg={9}>
