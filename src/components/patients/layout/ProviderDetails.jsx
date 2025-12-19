@@ -117,29 +117,22 @@ function ProviderDetails() {
                 </p>
 
                 <p className="provider-header-text">
+                    <i className="bi bi-phone-fill"></i>{" "}
+                    {provider.provider?.phone}
+                </p>
+
+                <p className="provider-header-text">
+                    <i className="bi bi-envelope-fill"></i>{" "}
+                    {provider.provider?.email}
+                </p>
+
+                <p className="provider-header-text">
                   <i className="bi bi-geo-alt-fill"></i>{" "}
                   {provider.address?.city},{" "}
                   {provider.address?.state},{" "}
                   {provider.address?.zip}
                 </p>
 
-                <div className="provider-header-actions">
-                  <Button
-                    variant="outline-custom-green"
-                    size="sm"
-                    className="me-2"
-                  >
-                    <i className="bi bi-globe"></i> View Website
-                  </Button>
-
-                  <Button
-                    variant="outline-custom-green"
-                    size="sm"
-                  >
-                    <i className="bi bi-telephone"></i>{" "}
-                    Call Provider
-                  </Button>
-                </div>
               </Col>
             </Row>
           </Card.Body>
