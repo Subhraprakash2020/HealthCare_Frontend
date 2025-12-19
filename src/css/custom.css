@@ -196,5 +196,80 @@ body {
   color: #8dc63f;
 }
 
+/* Page background */
+.provider-details-page {
+  background-color: #f5f7f9;
+}
 
+/* Header card */
+.provider-header-card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
 
+/* Profile image */
+.provider-header-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: #e6e6e6;
+  object-fit: cover;
+}
+
+.provider-header-name {
+  color: #6bc400;
+  font-weight: 600;
+}
+
+.provider-header-text {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.provider-header-text i {
+  color: #6bc400;
+  margin-right: 6px;
+}
+
+.provider-header-actions {
+  margin-top: 10px;
+}
+
+.btn-outline-custom-green {
+  color: #6bc400;
+  border: 1px solid #6bc400;
+}
+
+.btn-outline-custom-green:hover {
+  background-color: #6bc400;
+  color: #fff;
+}
+
+.provider-section-card {
+  border-radius: 8px;
+  border: 1px solid #ddd;
+}
+
+.section-title {
+  color: #6bc400;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.section-title i {
+  margin-right: 8px;
+}
+
+.section-text {
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.details-table th {
+  width: 40%;
+  font-weight: 600;
+}
+
+.details-table td {
+  font-size: 14px;
+}

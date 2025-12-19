@@ -11,6 +11,7 @@ import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/patients/layout/Dashboard';
 import SearchResults from './components/patients/layout/SearchResults';
 import ProfileEdit from './components/patients/layout/ProfileEdit';
+import ProviderDetails from './components/patients/layout/ProviderDetails';
 
 class App extends Component {
   render(){
@@ -35,6 +36,13 @@ class App extends Component {
               <ProfileEdit/>
             </ProtectedRoute>
           }/>
+          <Route path="/providers/details/:providerId"
+            element={
+              <ProtectedRoute>
+                <ProviderDetails />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
 
      

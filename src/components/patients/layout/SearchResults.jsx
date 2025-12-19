@@ -22,8 +22,10 @@ function SearchResults() {
     );
   }
 
-  const goToDetails = (providerId) => {
-    navigate(`/provider/details/${providerId}`);
+  const goToDetails = (item) => {
+    navigate(`/providers/details/${item.provider?.id}`, {
+      state: { provider: item }
+    });
   };
 
   const addToList = (e, providerId) => {
@@ -40,7 +42,7 @@ function SearchResults() {
             <Col key={index} lg={3} md={4} sm={6}>
               <Card
                 className="provider-card clickable-card text-center"
-                onClick={() => goToDetails(item.provider?.id)}
+                onClick={() => goToDetails(item)}
               >
                 <div className="add-to-list-top">
                   <Button className="btn-outline-custom-green "
