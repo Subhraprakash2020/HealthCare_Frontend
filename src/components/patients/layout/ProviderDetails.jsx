@@ -117,13 +117,13 @@ function ProviderDetails() {
                 </p>
 
                 <p className="provider-header-text">
-                    <i className="bi bi-phone-fill"></i>{" "}
-                    {provider.provider?.phone}
+                  <i className="bi bi-phone-fill"></i>{" "}
+                  {provider.provider?.phone}
                 </p>
 
                 <p className="provider-header-text">
-                    <i className="bi bi-envelope-fill"></i>{" "}
-                    {provider.provider?.email}
+                  <i className="bi bi-envelope-fill"></i>{" "}
+                  {provider.provider?.email}
                 </p>
 
                 <p className="provider-header-text">
