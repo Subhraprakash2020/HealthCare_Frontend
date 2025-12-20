@@ -200,7 +200,6 @@ function ProfileEdit() {
           </Col>
         </Row>
       </div>
-      <Footer></Footer>
     </>
   );
 }

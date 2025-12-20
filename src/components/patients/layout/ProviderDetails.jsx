@@ -22,7 +22,7 @@ function ProviderDetails() {
     if (!provider) {
       fetchProviderDetails();
     }
-  });
+  }, [providerId]);
 
   const fetchProviderDetails = async () => {
     try {
@@ -49,7 +49,14 @@ function ProviderDetails() {
 
       const data = await response.json();
 
-      setProvider(data);
+      setProvider({
+        provider: data.provider,
+        details: data.providerDetails,
+        address: data.providerAddress,
+        profileImage: data.providerProfileImage
+      });
+
+    //   setProvider(data);
     } catch (err) {
       console.error("ProviderDetails error:", err.message);
       setError(err.message);
@@ -196,8 +203,6 @@ function ProviderDetails() {
           Back
         </Button>
       </Container>
-
-      <Footer />
     </>
   );
 }

@@ -35,7 +35,7 @@
 }
 
 .input-bg {
-    background-color: #eaf0ff !important;
+    /* background-color: #eaf0ff !important; */
     border: 1px solid #d6ddf5 !important;
     padding: 10px;
     border-radius: 8px;
@@ -79,6 +79,7 @@
   column-rule: 1px solid #dee2e6;
   min-width: 300px;
   padding: 10px;
+  font-weight: 500px;
 }
 
 .dropdown-two-column .dropdown-item {
@@ -89,6 +90,10 @@
 .dropdown-two-column .dropdown-divider {
   column-span: all;
   margin: 10px 0;
+}
+
+.dropdown-item{
+  font-weight: 500;
 }
 
 .dropdown-logout-center {
@@ -272,4 +277,38 @@ body {
 
 .details-table td {
   font-size: 14px;
+}
+
+.app-layout {
+  min-height: 150vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content {
+  flex: 1;
+}
+
+.custom-my-4 {
+  margin-top: 7rem !important;
+  margin-bottom: 1.5rem !important;
+}
+
+.bg-image-container {
+  background-image: url("../images/image1.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 2rem;
+  height: 100vh;
+}
+
+.dropdown-logout-center {
+  text-align: center;
+  font-weight: 600;
+  color: #dc3545;
+}
+
+.dropdown-logout-center i {
+  color: #dc3545;
 }

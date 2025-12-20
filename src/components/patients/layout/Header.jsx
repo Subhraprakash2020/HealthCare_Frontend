@@ -87,18 +87,27 @@ function Header() {
               }
             >
               <NavDropdown.Item as={Link} to="/profile">
+                <i className="bi bi-person-circle me-2"></i>
                 My Profile
               </NavDropdown.Item>
 
+              <NavDropdown.Item as={Link} to="/profile">
+                <i className="bi bi-person-fill-gear me-2"></i>
+                Edit Profile
+              </NavDropdown.Item>
+
               <NavDropdown.Item as={Link} to="/profile/edit">
+                <i className="bi bi-cloud-upload-fill me-2"></i>
                 Upload my profile
               </NavDropdown.Item>
 
               <NavDropdown.Item as={Link} to="/profile/shared">
+                <i className="bi bi-share-fill me-2"></i>
                 Shared public profile
               </NavDropdown.Item>
 
               <NavDropdown.Item as={Link} to="/another-link">
+                <i className="bi bi-link-45deg me-2"></i>
                 Another link
               </NavDropdown.Item>
 
@@ -108,6 +117,7 @@ function Header() {
                 onClick={handleLogout}
                 className="dropdown-logout-center"
               >
+                <i className="bi bi-box-arrow-right me-2"></i>
                 Log out
               </NavDropdown.Item>
             </NavDropdown>
