@@ -86,17 +86,17 @@ function Header() {
                 </span>
               }
             >
-              <NavDropdown.Item as={Link} to="/profile">
+              <NavDropdown.Item as={Link} to="/profileInfo">
                 <i className="bi bi-person-circle me-2"></i>
                 My Profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/profile">
+              <NavDropdown.Item as={Link} to="/profileInfo/edit">
                 <i className="bi bi-person-fill-gear me-2"></i>
                 Edit Profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/profile/edit">
+              <NavDropdown.Item as={Link} to="/profileImage/edit">
                 <i className="bi bi-cloud-upload-fill me-2"></i>
                 Upload my profile
               </NavDropdown.Item>

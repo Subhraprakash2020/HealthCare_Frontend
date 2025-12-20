@@ -13,6 +13,8 @@ import SearchResults from './components/patients/layout/SearchResults';
 import ProfileImageEdit from './components/patients/layout/ProfileImageEdit';
 import ProviderDetails from './components/patients/layout/ProviderDetails';
 import AppLayout from './layout/AppLayout';
+import ProfileEdit from './components/patients/layout/ProfileEdit';
+import PatientProfile from './components/patients/layout/PatientProfile';
 
 class App extends Component {
   render(){
@@ -33,7 +35,7 @@ class App extends Component {
                 <SearchResults/>
               </ProtectedRoute>
             }/>
-            <Route path="/profile/edit" element={
+            <Route path="/profileImage/edit" element={
               <ProtectedRoute>
                 <ProfileImageEdit/>
               </ProtectedRoute>
@@ -42,6 +44,13 @@ class App extends Component {
               element={
                 <ProtectedRoute>
                   <ProviderDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/profileInfo"
+              element={
+                <ProtectedRoute>
+                  <PatientProfile/>
                 </ProtectedRoute>
               }
             />
