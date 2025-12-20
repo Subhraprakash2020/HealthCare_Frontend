@@ -10,7 +10,7 @@ import './css/custom.css';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/patients/layout/Dashboard';
 import SearchResults from './components/patients/layout/SearchResults';
-import ProfileEdit from './components/patients/layout/ProfileEdit';
+import ProfileImageEdit from './components/patients/layout/ProfileImageEdit';
 import ProviderDetails from './components/patients/layout/ProviderDetails';
 import AppLayout from './layout/AppLayout';
 
@@ -35,7 +35,7 @@ class App extends Component {
             }/>
             <Route path="/profile/edit" element={
               <ProtectedRoute>
-                <ProfileEdit/>
+                <ProfileImageEdit/>
               </ProtectedRoute>
             }/>
             <Route path="/providers/details/:providerId"

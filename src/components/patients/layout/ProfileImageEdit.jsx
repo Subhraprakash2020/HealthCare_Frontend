@@ -8,7 +8,7 @@ import Footer from "../home/Footer.jsx";
 import axios from "axios";
 import { ProfileContext } from "./ProfileContext.jsx";
 
-function ProfileEdit() {
+function ProfileImageEdit() {
   const [imageSrc, setImageSrc] = useState(null);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -204,4 +204,4 @@ function ProfileEdit() {
   );
 }
 
-export default ProfileEdit;
+export default ProfileImageEdit;
