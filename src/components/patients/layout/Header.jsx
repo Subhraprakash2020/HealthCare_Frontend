@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Navbar, Container, Nav, NavDropdown, Image as RBImage } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -9,14 +9,13 @@ import { ProfileContext } from "./ProfileContext";
 function Header() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-  const { profileImage, setProfileImage } = useContext(ProfileContext);
+  const { profileImage, setProfileImage, profileName, setProfileName } = useContext(ProfileContext);
 
-  const [profile, setProfile] = useState({
-    firstName: "",
-    lastName: "",
-    imageUrl: null
-  });
-
+  // const [profile, setProfile] = useState({
+  //   firstName: "",
+  //   lastName: "",
+  //   imageUrl: null
+  // });
 
 
   const handleLogout = () => {
@@ -36,24 +35,20 @@ function Header() {
         }
       })
       .then((res) => {
-        setProfile({
-          firstName: res.data.firstName,
-          lastName: res.data.lastName,
-          imageUrl: res.data.imageUrl
-        });
-        if(res.data.imageUrl){
+        setProfileName(`${res.data.firstName} ${res.data.lastName}`);
+        if (res.data.imageUrl) {
           setProfileImage(res.data.imageUrl);
         }
       })
       .catch(() => {
         console.warn("Profile not loaded");
       });
-  }, [token, setProfileImage]);
+  }, [token, setProfileImage, setProfileName]);
 
-  const fullName =
-    profile.firstName || profile.lastName
-      ? `${profile.firstName} ${profile.lastName}`
-      : "User Profile";
+  // const fullName =
+  //   profile.firstName || profile.lastName
+  //     ? `${profile.firstName} ${profile.lastName}`
+  //     : "User Profile";
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
@@ -78,13 +73,15 @@ function Header() {
                 <span className="profile-dropdown-title">
                   <RBImage
                     src={
-                      profileImage || profile.imageUrl ||
+                      profileImage ||
                       "https://cdn-icons-png.flaticon.com/512/847/847969.png"
                     }
                     roundedCircle
                     className="profile-avatar"
                   />
-                  <span className="profile-name">{fullName}</span>
+                  <span className="profile-name ms-2">
+                    {profileName || "User Profile"}
+                  </span>
                 </span>
               }
             >

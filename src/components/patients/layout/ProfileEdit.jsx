@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Container, Row, Col, Form, Button, Alert, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "../home/Footer";
+import { ProfileContext } from "./ProfileContext";
 
 function PatientProfileEdit() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ function PatientProfileEdit() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState(null);
+  const { setProfileName } = useContext(ProfileContext);
 
   useEffect(() => {
     fetchProfile();
@@ -78,6 +80,7 @@ function PatientProfileEdit() {
       setMessage(null);
 
       const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (!storedUser) throw new Error("User not logged in");
 
       const response = await fetch(
         "http://localhost:8080/healthcare/patient/updateDetails",
@@ -90,20 +93,38 @@ function PatientProfileEdit() {
           body: JSON.stringify({
             firstName: formData.firstName,
             lastName: formData.lastName,
-            phoneNumber: formData.phoneNumber
+            phoneNumber: formData.phoneNumber,
+            age: formData.age,
+            gender: formData.gender,
+            address: formData.address,
           }),
         }
       );
 
-      if (!response.ok) throw new Error("Update failed");
+      // ❌ Stop here if backend update failed
+      if (!response.ok) {
+        throw new Error("Update failed");
+      }
 
-      setMessage({ type: "success", text: "Profile updated successfully" });
+      // ✅ BACKEND SUCCESS → UPDATE HEADER NAME
+      setProfileName(`${formData.firstName} ${formData.lastName}`);
+
+      setMessage({
+        type: "success",
+        text: "Profile updated successfully!",
+      });
+
     } catch (err) {
-      setMessage({ type: "danger", text: err.message });
+      console.error("Profile update error:", err.message);
+      setMessage({
+        type: "danger",
+        text: err.message || "Profile update failed",
+      });
     } finally {
       setSaving(false);
     }
   };
+
 
   if (loading) {
     return (
