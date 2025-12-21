@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import Header from "./Header";
@@ -18,13 +18,7 @@ function ProviderDetails() {
   );
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    if (!provider) {
-      fetchProviderDetails();
-    }
-  }, [providerId]);
-
-  const fetchProviderDetails = async () => {
+  const fetchProviderDetails = useCallback(async () => {
     try {
       const storedUser = localStorage.getItem("user");
       if (!storedUser) {
@@ -53,18 +47,21 @@ function ProviderDetails() {
         provider: data.provider,
         details: data.providerDetails,
         address: data.providerAddress,
-        profileImage: data.providerProfileImage
+        profileImage: data.providerProfileImage,
       });
-
-    //   setProvider(data);
     } catch (err) {
       console.error("ProviderDetails error:", err.message);
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [providerId]);
 
+  useEffect(() => {
+    if (!provider) {
+      fetchProviderDetails();
+    }
+  }, [provider, fetchProviderDetails]);
 
   if (loading) {
     return (
