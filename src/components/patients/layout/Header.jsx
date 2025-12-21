@@ -50,8 +50,10 @@ function Header() {
       });
   }, [token, setProfileImage]);
 
-  const user = JSON.parse(localStorage.getItem("user"));
-  const fullName = user ? `${user.firstName} ${user.lastName}` : "User Profile";
+  const fullName =
+    profile.firstName || profile.lastName
+      ? `${profile.firstName} ${profile.lastName}`
+      : "User Profile";
 
   return (
     <Navbar bg="dark" variant="dark" expand="lg">

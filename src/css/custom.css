@@ -322,3 +322,30 @@ body {
   border: 4px solid #fff;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
+
+.label-green {
+  color: #6cc000;
+  font-weight: 600;
+}
+
+.tab-active {
+  color: #6cc000;
+  font-weight: 600;
+  border-bottom: 3px solid #6cc000;
+  padding-bottom: 8px;
+}
+
+.tab-inactive {
+  color: #6c757d;
+  font-weight: 600;
+}
+
+.btn-save {
+  background-color: #6cc000;
+  border: none;
+  padding: 8px 22px;
+}
+
+.btn-save:hover {
+  background-color: #5aa800;
+}
