@@ -1,8 +1,8 @@
 import { createContext } from "react";
 
 export const ProfileContext = createContext({
-    profileImage: null,
-    setProfileImage: ()=>{},
-    profileName: "",
-    setProfileName: ()=>{}
+  profileImage: null,
+  setProfileImage: ()=>{},
+  profileName: "",
+  setProfileName: ()=>{}
 });

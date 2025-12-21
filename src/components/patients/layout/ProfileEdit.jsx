@@ -158,7 +158,7 @@ function PatientProfileEdit() {
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Label className="text-custom-green">
-                    Phone
+                    Phone *
                   </Form.Label>
                   <Form.Control
                     name="phoneNumber"
@@ -182,7 +182,7 @@ function PatientProfileEdit() {
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Label className="text-custom-green">
-                    Age
+                    Age *
                   </Form.Label>
                   <Form.Control
                     name="age"
@@ -192,7 +192,7 @@ function PatientProfileEdit() {
                 </Col>
                 <Col md={6}>
                   <Form.Label className="text-custom-green">
-                    Gender
+                    Gender *
                   </Form.Label>
                   <Form.Select
                     name="gender"
@@ -209,7 +209,7 @@ function PatientProfileEdit() {
               <Row className="mb-3">
                 <Col md={6}>
                   <Form.Label className="text-custom-green">
-                    Address
+                    Address *
                   </Form.Label>
                   <Form.Control
                     name="address"
@@ -223,7 +223,7 @@ function PatientProfileEdit() {
               <Row className="align-items-center mt-4">
                 <Col>
                   <Button
-                    variant="link"
+                    className="btn btn-danger"
                     onClick={() => navigate(-1)}
                   >
                     Cancel
