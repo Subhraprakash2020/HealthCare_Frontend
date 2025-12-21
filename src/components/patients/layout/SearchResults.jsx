@@ -102,7 +102,6 @@ function SearchResults() {
           ))}
         </Row>
       </Container>
-      <Footer/>
     </>
   );
 }

@@ -102,105 +102,104 @@ function Dashboard() {
   return (
     <div>
       <Header />
+      <div className="bg-image-container">
+        {message && (
+          <Message
+            variant="success"
+            message={message}
+            onClose={() => setMessage(null)}
+          />
+        )}
 
-      {message && (
-        <Message
-          variant="success"
-          message={message}
-          onClose={() => setMessage(null)}
-        />
-      )}
+        <Container className="custom-my-4">
+          <div className="bg-white p-4 rounded shadow-sm">
+            <Row>
+              <Col md={6} className="mb-3">
+                <Form.Label className="text-custom-green">
+                  Level of Treatment
+                </Form.Label>
+                <Form.Select
+                  value={selectedTreatmentLevel}
+                  onChange={(e) => setSelectedTreatmentLevel(e.target.value)}
+                >
+                  <option value="">Select Treatment Level</option>
+                  {treatmentLevels.map((t, index) => {
+                    const value = typeof t === "string" ? t : t.name;
+                    const label = typeof t === "string" ? t : t.label || t.name;
 
-      <Container className="my-4">
-        <div className="bg-white p-4 rounded shadow-sm">
-          <Row>
-            <Col md={6} className="mb-3">
-              <Form.Label className="text-custom-green">
-                Level of Treatment
-              </Form.Label>
-              <Form.Select
-                value={selectedTreatmentLevel}
-                onChange={(e) => setSelectedTreatmentLevel(e.target.value)}
-              >
-                <option value="">Select Treatment Level</option>
-                {treatmentLevels.map((t, index) => {
-                  const value = typeof t === "string" ? t : t.name;
-                  const label = typeof t === "string" ? t : t.label || t.name;
+                    return (
+                      <option key={index} value={value}>
+                        {label}
+                      </option>
+                    );
+                  })}
+                </Form.Select>
 
-                  return (
-                    <option key={index} value={value}>
-                      {label}
-                    </option>
-                  );
-                })}
-              </Form.Select>
+              </Col>
 
-            </Col>
+              <Col md={6} className="mb-3">
+                <Form.Label className="text-custom-green">
+                  Pratices
+                </Form.Label>
+                <Form.Select 
+                  value={selectedPractice}
+                  onChange={(e) => setSelectedPractice(e.target.value)}
+                >
+                  <option value="">Select Practice</option>
+                  {practices.map((t, index) =>{
+                    const value = typeof t === "string" ? t : t.name;
+                    const lebel = typeof t === "string" ? t : t.label || t.name;
 
-            <Col md={6} className="mb-3">
-              <Form.Label className="text-custom-green">
-                Pratices
-              </Form.Label>
-              <Form.Select 
-                value={selectedPractice}
-                onChange={(e) => setSelectedPractice(e.target.value)}
-              >
-                <option value="">Select Practice</option>
-                {practices.map((t, index) =>{
-                  const value = typeof t === "string" ? t : t.name;
-                  const lebel = typeof t === "string" ? t : t.label || t.name;
+                    return(
+                      <option key={index} value={value}>
+                        {lebel}
+                      </option>
+                    )
+                  })}
 
-                  return(
-                    <option key={index} value={value}>
-                      {lebel}
-                    </option>
-                  )
-                })}
+                </Form.Select>
+              </Col>
+            </Row>
 
-              </Form.Select>
-            </Col>
-          </Row>
+            {/* Row 2 – Search Text Fields */}
+            <Row className="mt-3">
+              <Col md={6} className="mb-3">
+                <Form.Label className="text-custom-green">
+                  Search By Clinican Name
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter keyword"
+                  value={searchText1}
+                  onChange={(e) => setSearchText1(e.target.value)}
+                />
+              </Col>
 
-          {/* Row 2 – Search Text Fields */}
-          <Row className="mt-3">
-            <Col md={6} className="mb-3">
-              <Form.Label className="text-custom-green">
-                Search By Clinican Name
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter keyword"
-                value={searchText1}
-                onChange={(e) => setSearchText1(e.target.value)}
-              />
-            </Col>
+              <Col md={6} className="mb-3">
+                <Form.Label className="text-custom-green">
+                  Search By ZIP
+                </Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter location / name"
+                  value={searchText2}
+                  onChange={(e) => setSearchText2(e.target.value)}
+                />
+              </Col>
+            </Row>
 
-            <Col md={6} className="mb-3">
-              <Form.Label className="text-custom-green">
-                Search By ZIP
-              </Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter location / name"
-                value={searchText2}
-                onChange={(e) => setSearchText2(e.target.value)}
-              />
-            </Col>
-          </Row>
+            {/* Search Button */}
+            <Row>
+              <Col className="text-center mt-4">
+                <Button className="btn-custom-green px-5" onClick={handleSearch}>
+                  Search
+                </Button>
+              </Col>
+            </Row>
 
-          {/* Search Button */}
-          <Row>
-            <Col className="text-center mt-4">
-              <Button className="btn-custom-green px-5" onClick={handleSearch}>
-                Search
-              </Button>
-            </Col>
-          </Row>
-
-        </div>
-      </Container>
-
-      <Footer />
+          </div>
+        </Container>
+      </div>
     </div>
   );
 

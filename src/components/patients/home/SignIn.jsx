@@ -115,8 +115,7 @@ function SignIn() {
           </Col>
         </Row>
       </Container>
-      <Footer></Footer>
-    </>
+      ]    </>
   );
 }
 

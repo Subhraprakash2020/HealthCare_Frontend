@@ -10,40 +10,53 @@ import './css/custom.css';
 import ProtectedRoute from './ProtectedRoute';
 import Dashboard from './components/patients/layout/Dashboard';
 import SearchResults from './components/patients/layout/SearchResults';
-import ProfileEdit from './components/patients/layout/ProfileEdit';
+import ProfileImageEdit from './components/patients/layout/ProfileImageEdit';
 import ProviderDetails from './components/patients/layout/ProviderDetails';
+import AppLayout from './layout/AppLayout';
+import ProfileEdit from './components/patients/layout/ProfileEdit';
+import PatientProfile from './components/patients/layout/PatientProfile';
 
 class App extends Component {
   render(){
     return (
       <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path="/signin" element={<SignIn/>}/>
-          <Route path="/signup" element={<SignUp/>}/>
-          <Route path="/patient/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/provider-search-results" element={
-            <ProtectedRoute>
-              <SearchResults/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/profile/edit" element={
-            <ProtectedRoute>
-              <ProfileEdit/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/providers/details/:providerId"
-            element={
+        <AppLayout>
+          <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path="/signin" element={<SignIn/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/patient/dashboard" element={
               <ProtectedRoute>
-                <ProviderDetails />
+                <Dashboard/>
               </ProtectedRoute>
-            }
-          />
-        </Routes>
+            }/>
+            <Route path="/provider-search-results" element={
+              <ProtectedRoute>
+                <SearchResults/>
+              </ProtectedRoute>
+            }/>
+            <Route path="/profileImage/edit" element={
+              <ProtectedRoute>
+                <ProfileImageEdit/>
+              </ProtectedRoute>
+            }/>
+            <Route path="/providers/details/:providerId"
+              element={
+                <ProtectedRoute>
+                  <ProviderDetails />
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/profileInfo"
+              element={
+                <ProtectedRoute>
+                  <PatientProfile/>
+                </ProtectedRoute>
+              }
+            />
+          </Routes>
+       
+        </AppLayout>
 
      
       </BrowserRouter>
