@@ -4,6 +4,7 @@ import { Container, Row, Col, Card, Button, Spinner } from "react-bootstrap";
 import Header from "./Header";
 import Footer from "../home/Footer";
 import "../../../css/custom.css";
+import ProviderAction from "./ProviderAction";
 
 function ProviderDetails() {
   const { providerId } = useParams();
@@ -96,106 +97,112 @@ function ProviderDetails() {
       <Header />
 
       <Container className="mt-4 provider-details-page">
-        <Card className="provider-header-card mb-4">
-          <Card.Body>
-            <Row className="align-items-center">
-              <Col md={3} className="text-center">
-                <img
-                  src={
-                    provider.profileImage?.imageUrl ||
-                    "https://cdn-icons-png.flaticon.com/512/847/847969.png"
-                  }
-                  alt="provider"
-                  className="provider-header-image"
-                />
-              </Col>
+        <Row>
+          <Col lg={8} md={12}>
+            <Card className="provider-header-card mb-4">
+              <Card.Body>
+                <Row className="align-items-center">
+                  <Col md={3} className="text-center">
+                    <img
+                      src={
+                        provider.profileImage?.imageUrl ||
+                        "https://cdn-icons-png.flaticon.com/512/847/847969.png"
+                      }
+                      alt="provider"
+                      className="provider-header-image"
+                    />
+                  </Col>
 
-              <Col md={9}>
-                <h4 className="provider-header-name">
-                  {provider.details?.clinicianName}
-                </h4>
+                  <Col md={9}>
+                    <h4 className="provider-header-name">
+                      {provider.details?.clinicianName}
+                    </h4>
 
-                <p className="provider-header-text">
-                  <i className="bi bi-briefcase-fill"></i>{" "}
-                  {provider.details?.practices}
+                    <p className="provider-header-text">
+                      <i className="bi bi-briefcase-fill"></i>{" "}
+                      {provider.details?.practices}
+                    </p>
+
+                    <p className="provider-header-text">
+                      <i className="bi bi-phone-fill"></i>{" "}
+                      {provider.provider?.phone}
+                    </p>
+
+                    <p className="provider-header-text">
+                      <i className="bi bi-envelope-fill"></i>{" "}
+                      {provider.provider?.email}
+                    </p>
+
+                    <p className="provider-header-text">
+                      <i className="bi bi-geo-alt-fill"></i>{" "}
+                      {provider.address?.city},{" "}
+                      {provider.address?.state},{" "}
+                      {provider.address?.zip}
+                    </p>
+
+                  </Col>
+                </Row>
+              </Card.Body>
+            </Card>
+
+            <Card className="provider-section-card mb-4">
+              <Card.Body>
+                <h5 className="section-title">
+                  <i className="bi bi-pencil-square"></i> About me
+                </h5>
+                <p className="section-text">
+                  {provider.details?.aboutMe || "N/A"}
                 </p>
+              </Card.Body>
+            </Card>
 
-                <p className="provider-header-text">
-                  <i className="bi bi-phone-fill"></i>{" "}
-                  {provider.provider?.phone}
-                </p>
+            <Card className="provider-section-card mb-4">
+              <Card.Body>
+                <h5 className="section-title">
+                  <i className="bi bi-mortarboard-fill"></i>{" "}
+                  Qualification Experience
+                </h5>
 
-                <p className="provider-header-text">
-                  <i className="bi bi-envelope-fill"></i>{" "}
-                  {provider.provider?.email}
-                </p>
+                <table className="table table-borderless mt-3 details-table">
+                  <tbody>
+                    <tr>
+                      <th>Level of Treatment</th>
+                      <td>{provider.details?.levelOfTreatment}</td>
+                    </tr>
 
-                <p className="provider-header-text">
-                  <i className="bi bi-geo-alt-fill"></i>{" "}
-                  {provider.address?.city},{" "}
-                  {provider.address?.state},{" "}
-                  {provider.address?.zip}
-                </p>
+                    <tr>
+                      <th>Patient Age Bracket</th>
+                      <td>{provider.details?.patientAgeBracket}</td>
+                    </tr>
 
-              </Col>
-            </Row>
-          </Card.Body>
-        </Card>
+                    <tr>
+                      <th>Experience</th>
+                      <td>
+                        {provider.details?.experienceYears} Years
+                      </td>
+                    </tr>
 
-        <Card className="provider-section-card mb-4">
-          <Card.Body>
-            <h5 className="section-title">
-              <i className="bi bi-pencil-square"></i> About me
-            </h5>
-            <p className="section-text">
-              {provider.details?.aboutMe || "N/A"}
-            </p>
-          </Card.Body>
-        </Card>
+                    <tr>
+                      <th>Availability</th>
+                      <td>
+                        {provider.details?.availabilityInWeek},{" "}
+                        {provider.details?.availabilityTime}
+                      </td>
+                    </tr>
 
-        <Card className="provider-section-card mb-4">
-          <Card.Body>
-            <h5 className="section-title">
-              <i className="bi bi-mortarboard-fill"></i>{" "}
-              Qualification Experience
-            </h5>
-
-            <table className="table table-borderless mt-3 details-table">
-              <tbody>
-                <tr>
-                  <th>Level of Treatment</th>
-                  <td>{provider.details?.levelOfTreatment}</td>
-                </tr>
-
-                <tr>
-                  <th>Patient Age Bracket</th>
-                  <td>{provider.details?.patientAgeBracket}</td>
-                </tr>
-
-                <tr>
-                  <th>Experience</th>
-                  <td>
-                    {provider.details?.experienceYears} Years
-                  </td>
-                </tr>
-
-                <tr>
-                  <th>Availability</th>
-                  <td>
-                    {provider.details?.availabilityInWeek},{" "}
-                    {provider.details?.availabilityTime}
-                  </td>
-                </tr>
-
-                <tr>
-                  <th>Consulting Fee</th>
-                  <td>₹ {provider.details?.consultingFee}</td>
-                </tr>
-              </tbody>
-            </table>
-          </Card.Body>
-        </Card>
-
+                    <tr>
+                      <th>Consulting Fee</th>
+                      <td>₹ {provider.details?.consultingFee}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col lg={4} md={12}>
+            <ProviderAction provider={provider} />
+          </Col>
+        </Row>
         <Button variant="secondary" onClick={() => navigate(-1)}>
           Back
         </Button>

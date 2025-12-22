@@ -349,3 +349,26 @@ body {
 .btn-save:hover {
   background-color: #5aa800;
 }
+
+.action-card {
+  background-color: #5aa800;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.action-btn {
+  background-color: #5aa800 !important;
+  border: none !important;
+  border-bottom: 1px solid #5aa800;
+  text-align: left;
+  padding: 14px 16px;
+  font-weight: 500;
+}
+
+.action-btn:hover {
+  background-color: #5ab800 !important;
+}
+
+.map-card {
+  border-radius: 6px;
+}
