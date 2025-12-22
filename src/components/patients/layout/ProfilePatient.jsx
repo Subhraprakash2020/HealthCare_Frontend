@@ -4,9 +4,17 @@ import { ProfileContext } from "./ProfileContext";
 
 const ProfilePatient = ({ children }) => {
   const [profileImage, setProfileImage] = useState(null);
+  const [profileName, setProfileName] = useState("");
 
   return (
-    <ProfileContext.Provider value={{ profileImage, setProfileImage }}>
+    <ProfileContext.Provider
+      value={{
+        profileImage,
+        setProfileImage,
+        profileName,
+        setProfileName
+      }}
+    >
       {children}
     </ProfileContext.Provider>
   );

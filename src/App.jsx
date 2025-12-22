@@ -54,6 +54,13 @@ class App extends Component {
                 </ProtectedRoute>
               }
             />
+            <Route path="/profileInfo/edit"
+              element={
+                <ProtectedRoute>
+                  <ProfileEdit/>
+                </ProtectedRoute>
+              }
+            />
           </Routes>
        
         </AppLayout>
