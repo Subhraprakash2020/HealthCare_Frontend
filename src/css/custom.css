@@ -372,3 +372,22 @@ body {
 .map-card {
   border-radius: 6px;
 }
+
+.bg-primary-green{
+  background-color: #5ab800 !important;
+}
+
+.slot-box {
+  width: 32px;
+  height: 32px;
+  cursor: pointer;
+}
+
+.slot-box.bg-secondary {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.slot-box.bg-white:hover {
+  background-color: #e9f1ff;
+}

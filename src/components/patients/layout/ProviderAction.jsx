@@ -2,6 +2,8 @@ import React from "react";
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
+
 
 function ProviderAction({ providerId }) {
   const navigate = useNavigate();
@@ -20,7 +22,6 @@ function ProviderAction({ providerId }) {
     window.open("https://www.google.com/maps/search/", "_blank");
   };
 
-  // ✅ Dynamic booking logic
   const handleBooking = async () => {
     if (!providerId) {
       alert("Provider ID missing");
@@ -135,3 +136,11 @@ function ProviderAction({ providerId }) {
 }
 
 export default ProviderAction;
+
+ProviderAction.propTypes = {
+  providerId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+};
+

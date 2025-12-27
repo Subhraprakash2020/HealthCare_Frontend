@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { useSearchParams, useNavigate, useParams } from "react-router-dom";
-import { Card, Button, Spinner, Badge } from "react-bootstrap";
+import React, { useEffect, useState, useCallback } from "react";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { Button, Spinner } from "react-bootstrap";
 import axios from "axios";
 import Header from "./Header";
+import "../../../css/custom.css";
 
-const getNext7Days = () => {
+const get7DaysFrom = (startDate) => {
   const days = [];
-  const today = new Date();
+  const base = new Date(startDate);
 
   for (let i = 0; i < 7; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
+    const d = new Date(base);
+    d.setDate(base.getDate() + i);
 
     days.push({
       label: d.toLocaleDateString("en-US", { weekday: "short" }),
@@ -21,89 +22,109 @@ const getNext7Days = () => {
   return days;
 };
 
-const SlotBookingPage = () => {
+function SlotBookingPage() {
   const navigate = useNavigate();
-  const { availabilityId: urlAvailabilityId } = useParams();
   const [searchParams] = useSearchParams();
-
   const providerId = searchParams.get("providerId");
 
-  const [selectedDate, setSelectedDate] = useState(
-    searchParams.get("date") ||
-      new Date().toISOString().split("T")[0]
-  );
-  const [availabilityId, setAvailabilityId] = useState(urlAvailabilityId);
+  const todayIso = new Date().toISOString().split("T")[0];
+
+  const [startDate, setStartDate] = useState(todayIso);
+  const [selectedDate, setSelectedDate] = useState(todayIso);
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  const monthYear = new Date(startDate).toLocaleDateString("en-US", {
+    month: "long",
+    year: "numeric",
+  });
+
+  const fetchSlots = useCallback(
+    async (availId, date, token) => {
+      const res = await axios.get(
+        `http://localhost:8080/healthcare/patient/booking/slot/${availId}`,
+        {
+          params: { providerId, date },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setSlots(res.data || []);
+    },
+    [providerId]
+  );
+
+  const fetchAvailabilityByDate = useCallback(
+    async (date) => {
+      try {
+        setLoading(true);
+        setSlots([]);
+
+        const storedUser = localStorage.getItem("user");
+        if (!storedUser) {
+          alert("Please login again");
+          return;
+        }
+
+        const { accessToken } = JSON.parse(storedUser);
+
+        const res = await axios.get(
+          `http://localhost:8080/healthcare/patient/booking/availability/${providerId}`,
+          {
+            params: { date },
+            headers: { Authorization: `Bearer ${accessToken}` },
+          }
+        );
+
+        if (!res.data || res.data.length === 0) {
+          return;
+        }
+
+        const availId = res.data[0].id;
+
+        navigate(
+          `/patient/slot/${availId}?providerId=${providerId}&date=${date}`,
+          { replace: true }
+        );
+
+        await fetchSlots(availId, date, accessToken);
+      } catch (err) {
+        console.error(err);
+        alert("Unable to load availability");
+      } finally {
+        setLoading(false);
+      }
+    },
+    [providerId, navigate, fetchSlots]
+  );
+
 
   useEffect(() => {
     if (providerId) {
       fetchAvailabilityByDate(selectedDate);
     }
-  }, [providerId]);
-
-  const fetchAvailabilityByDate = async (date) => {
-    try {
-      setLoading(true);
-      setSlots([]);
-
-      const storedUser = localStorage.getItem("user");
-      if (!storedUser) {
-        alert("Please login again");
-        return;
-      }
-
-      const { accessToken } = JSON.parse(storedUser);
-
-      const response = await axios.get(
-        `http://localhost:8080/healthcare/patient/booking/availability/${providerId}`,
-        {
-          params: { date },
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      );
-
-      if (!response.data || response.data.length === 0) {
-        setAvailabilityId(null);
-        setSlots([]);
-        return;
-      }
-
-      const newAvailabilityId = response.data[0].id;
-      setAvailabilityId(newAvailabilityId);
-
-      navigate(
-        `/patient/slot/${newAvailabilityId}?providerId=${providerId}&date=${date}`,
-        { replace: true }
-      );
-
-      await fetchSlots(newAvailabilityId, date, accessToken);
-    } catch (err) {
-      console.error("Error fetching availability", err);
-      alert("Unable to load availability");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const fetchSlots = async (availId, date, token) => {
-    const res = await axios.get(
-      `http://localhost:8080/healthcare/patient/booking/slot/${availId}`,
-      {
-        params: { providerId, date },
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    setSlots(res.data || []);
-  };
+  }, [providerId, selectedDate, fetchAvailabilityByDate]);
 
   const handleDateClick = (date) => {
     setSelectedDate(date);
     fetchAvailabilityByDate(date);
+  };
+
+  const goToPrevious = () => {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() - 1);
+    setStartDate(d.toISOString().split("T")[0]);
+  };
+
+  const goToNext = () => {
+    const d = new Date(startDate);
+    d.setDate(d.getDate() + 1);
+    setStartDate(d.toISOString().split("T")[0]);
+  };
+
+  const handleSlotBooking = (slot) => {
+    navigate(
+      `/patient/confirm-booking?slotId=${slot.id}&providerId=${providerId}&date=${selectedDate}`
+    );
   };
 
   const formatTime = (time) => (time ? time.substring(0, 5) : "");
@@ -113,22 +134,44 @@ const SlotBookingPage = () => {
       <Header />
 
       <div className="container mt-4">
-        <div className="d-flex overflow-auto mb-4">
-          {getNext7Days().map((d) => (
-            <div
-              key={d.iso}
-              className={`text-center px-3 py-2 mx-1 rounded border ${
-                selectedDate === d.iso
-                  ? "border-primary bg-primary text-white"
-                  : "border-secondary"
-              }`}
-              style={{ cursor: "pointer", minWidth: "70px" }}
-              onClick={() => handleDateClick(d.iso)}
+        <div className="mb-3">
+          <h6 className="mb-0">{monthYear}</h6>
+        </div>
+
+        <div className="d-flex align-items-center mb-4">
+          <div className="d-flex flex-nowrap overflow-auto flex-grow-1">
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              className="me-2"
+              onClick={goToPrevious}
             >
-              <div className="small fw-semibold">{d.label}</div>
-              <div className="fw-bold">{d.day}</div>
-            </div>
-          ))}
+              ◀
+            </Button>
+            {get7DaysFrom(startDate).map((d) => (
+              <div
+                key={d.iso}
+                className={`text-center px-3 py-2 mx-1 rounded border ${
+                  selectedDate === d.iso
+                    ? "bg-primary-green text-white"
+                    : "border-secondary"
+                }`}
+                style={{ minWidth: "70px", cursor: "pointer" }}
+                onClick={() => handleDateClick(d.iso)}
+              >
+                <div className="small fw-semibold">{d.label}</div>
+                <div className="fw-bold">{d.day}</div>
+              </div>
+            ))}
+            <Button
+              size="sm"
+              variant="outline-secondary"
+              className="ms-2"
+              onClick={goToNext}
+            >
+              ▶
+            </Button>
+          </div>
         </div>
 
         <h5 className="mb-3">Available Slots</h5>
@@ -140,42 +183,51 @@ const SlotBookingPage = () => {
         )}
 
         {!loading && slots.length === 0 && (
-          <p className="text-muted">No slots available for this date</p>
+          <p className="text-muted">No slots available</p>
         )}
 
-        {!loading &&
-          slots.map((slot) => (
-            <Card key={slot.id} className="mb-3 shadow-sm">
-              <Card.Body className="d-flex justify-content-between align-items-center">
-                <div>
-                  <h6 className="mb-1">
-                    {formatTime(slot.startTime)} –{" "}
-                    {formatTime(slot.endTime)}
-                  </h6>
-                  <small className="text-muted">
-                    Capacity: {slot.bookedCount}/{slot.maxCapacity}
-                  </small>
+        {!loading && slots.length > 0 && (
+          <div className="mt-3">
+            {slots.map((slot) => (
+              <div key={slot.id} className="mb-4">
+                <div className="fw-semibold mb-2">
+                  {formatTime(slot.startTime)} –{" "}
+                  {formatTime(slot.endTime)}
                 </div>
 
-                <div className="text-end">
-                  {slot.status === "AVAILABLE" ? (
-                    <>
-                      <Badge bg="success" className="mb-2">
-                        Available
-                      </Badge>
-                      <br />
-                      <Button size="sm">Book</Button>
-                    </>
-                  ) : (
-                    <Badge bg="danger">Full</Badge>
-                  )}
+                <div className="d-flex flex-wrap gap-2">
+                  {Array.from({ length: slot.maxCapacity }).map((_, index) => {
+                    const isBooked = index < slot.bookedCount;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`slot-box border rounded ${
+                          isBooked
+                            ? "bg-secondary"
+                            : "bg-white border-primary"
+                        }`}
+                        onClick={() => {
+                          if (!isBooked) handleSlotBooking(slot);
+                        }}
+                        role="button"
+                        aria-disabled={isBooked}
+                      />
+                    );
+                  })}
                 </div>
-              </Card.Body>
-            </Card>
-          ))}
+
+                <div className="small text-muted mt-1">
+                  Available: {slot.maxCapacity - slot.bookedCount} /{" "}
+                  {slot.maxCapacity}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </>
   );
-};
+}
 
 export default SlotBookingPage;
