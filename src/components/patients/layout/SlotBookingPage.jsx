@@ -4,6 +4,7 @@ import { Button, Spinner } from "react-bootstrap";
 import axios from "axios";
 import Header from "./Header";
 import "../../../css/custom.css";
+import BookingSummary from "./BookingSummary";
 
 const get7DaysFrom = (startDate) => {
   const days = [];
@@ -33,6 +34,11 @@ function SlotBookingPage() {
   const [selectedDate, setSelectedDate] = useState(todayIso);
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedSlot, setSelectedSlot] = useState(null);
+  const [selectedSlotId, setSelectedSlotId] = useState(null);
+  const [selectedSeat, setSelectedSeat] = useState(null);
+
+
 
   const monthYear = new Date(startDate).toLocaleDateString("en-US", {
     month: "long",
@@ -133,97 +139,120 @@ function SlotBookingPage() {
     <>
       <Header />
       <div className="container mt-4">
-        <div className="mb-3">
-          <h6 className="mb-0">{monthYear}</h6>
-        </div>
+        <div className="row">
+          <div className="col-md-8">
+            <div className="mb-3">
+              <h6 className="mb-0">{monthYear}</h6>
+            </div>
 
-        <div className="d-flex align-items-center mb-4">
-          <div className="d-flex flex-nowrap overflow-auto flex-grow-1">
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              className="me-2"
-              onClick={goToPrevious}
-            >
-              ◀
-            </Button>
-            {get7DaysFrom(startDate).map((d) => (
-              <div
-                key={d.iso}
-                className={`text-center px-3 py-2 mx-1 rounded border ${
-                  selectedDate === d.iso
-                    ? "bg-primary-green text-white"
-                    : "border-secondary"
-                }`}
-                style={{ minWidth: "70px", cursor: "pointer" }}
-                onClick={() => handleDateClick(d.iso)}
-              >
-                <div className="small fw-semibold">{d.label}</div>
-                <div className="fw-bold">{d.day}</div>
+            <div className="d-flex align-items-center mb-4">
+              <div className="d-flex flex-nowrap overflow-auto flex-grow-1">
+                <Button
+                  size="sm"
+                  variant="outline-secondary"
+                  className="me-2"
+                  onClick={goToPrevious}
+                >
+                  ◀
+                </Button>
+                {get7DaysFrom(startDate).map((d) => (
+                  <div
+                    key={d.iso}
+                    className={`text-center px-3 py-2 mx-1 rounded border ${
+                      selectedDate === d.iso
+                        ? "bg-primary-green text-white"
+                        : "border-secondary"
+                    }`}
+                    style={{ minWidth: "70px", cursor: "pointer" }}
+                    onClick={() => handleDateClick(d.iso)}
+                  >
+                    <div className="small fw-semibold">{d.label}</div>
+                    <div className="fw-bold">{d.day}</div>
+                  </div>
+                ))}
+                <Button
+                  size="sm"
+                  variant="outline-secondary"
+                  className="ms-2"
+                  onClick={goToNext}
+                >
+                  ▶
+                </Button>
               </div>
-            ))}
-            <Button
-              size="sm"
-              variant="outline-secondary"
-              className="ms-2"
-              onClick={goToNext}
-            >
-              ▶
-            </Button>
-          </div>
-        </div>
+            </div>
 
-        <h5 className="mb-3">Available Slots</h5>
+            <h5 className="mb-3">Available Slots</h5>
 
-        {loading && (
-          <div className="text-center mt-4">
-            <Spinner animation="border" />
-          </div>
-        )}
+            {loading && (
+              <div className="text-center mt-4">
+                <Spinner animation="border" />
+              </div>
+            )}
 
-        {!loading && slots.length === 0 && (
-          <p className="text-muted">No slots available</p>
-        )}
+            {!loading && slots.length === 0 && (
+              <p className="text-muted">No slots available</p>
+            )}
 
-        {!loading && slots.length > 0 && (
-          <div className="mt-3">
-            {slots.map((slot) => (
-              <div key={slot.id} className="mb-4">
-                <div className="fw-semibold mb-2">
-                  {formatTime(slot.startTime)} –{" "}
-                  {formatTime(slot.endTime)}
-                </div>
+            {!loading && slots.length > 0 && (
+              <div className="mt-3">
+                {slots.map((slot) => (
+                  <div key={slot.id} className="mb-4">
+                    <div className="fw-semibold mb-2">
+                      {formatTime(slot.startTime)} –{" "}
+                      {formatTime(slot.endTime)}
+                    </div>
 
-                <div className="d-flex flex-wrap gap-2">
-                  {Array.from({ length: slot.maxCapacity }).map((_, index) => {
-                    const isBooked = index < slot.bookedCount;
+                    <div className="d-flex flex-wrap gap-2">
+                      {Array.from({ length: slot.maxCapacity }).map((_, index) => {
+                        const isBooked = index < slot.bookedCount;
 
-                    return (
-                      <div
-                        key={index}
-                        className={`slot-capacity d-flex align-items-center justify-content-center fw-semibold
+                        return (
+                          <div
+                            key={index}
+                            className={`slot-capacity d-flex align-items-center justify-content-center fw-semibold
                           ${isBooked ? "slot-booked" : "slot-available"}
+                          ${
+                          selectedSeat?.slotId === slot.id &&
+                              selectedSeat?.seatNumber === index + 1
+                            ? "slot-selected"
+                            : ""
+                          }
                         `}
-                        onClick={() => {
-                          if (!isBooked) handleSlotBooking(slot);
-                        }}
-                        role="button"
-                        aria-disabled={isBooked}
-                      >
-                        {index + 1}
-                      </div>
-                    );
-                  })}
-                </div>
+                            onClick={() => {
+                              if (!isBooked) {
+                                setSelectedSlot(slot);
+                                setSelectedSeat({
+                                  slotId: slot.id,
+                                  seatNumber: index + 1,
+                                });
+                              }
+                            }}
+                            role="button"
+                            aria-disabled={isBooked}
+                          >
+                            {index + 1}
+                          </div>
+                        );
+                      })}
+                    </div>
 
-                <div className="small text-muted mt-1">
-                  Available: {slot.maxCapacity - slot.bookedCount} /{" "}
-                  {slot.maxCapacity}
-                </div>
+                    <div className="small text-muted mt-1">
+                      Available: {slot.maxCapacity - slot.bookedCount} /{" "}
+                      {slot.maxCapacity}
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
+            )}
           </div>
-        )}
+          <div className="col-md-4">
+            <BookingSummary
+              slot={selectedSlot}
+              providerId={providerId}
+              selectedDate={selectedDate}
+            />
+          </div>
+        </div>
       </div>
     </>
   );
