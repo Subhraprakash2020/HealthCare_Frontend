@@ -44,11 +44,13 @@ function ProviderAction({ providerId }) {
       );
 
       if (!response.data || response.data.length === 0) {
-        alert("No future availability found");
+        // alert("No future availability found");
+        navigate(
+          `/patient/slot/providerId=${providerId}`
+        );
         return;
       }
 
-      // take earliest future availability
       const availabilityId = response.data[0].id;
       console.log("availabilityId",availabilityId)
 
@@ -63,7 +65,6 @@ function ProviderAction({ providerId }) {
 
   return (
     <>
-      {/* ACTIONS */}
       <Card className="mb-4 action-card">
         <Card.Body className="p-0">
           <Button
@@ -96,7 +97,6 @@ function ProviderAction({ providerId }) {
         </Card.Body>
       </Card>
 
-      {/* MAP */}
       <Card className="map-card">
         <Card.Body>
           <h6 className="mb-3">
@@ -121,7 +121,6 @@ function ProviderAction({ providerId }) {
         </Card.Body>
       </Card>
 
-      {/* BOOK APPOINTMENT */}
       <Card className="booking-button-card mt-4">
         <Button
           variant="primary"

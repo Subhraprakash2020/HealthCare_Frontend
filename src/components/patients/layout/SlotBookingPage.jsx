@@ -89,7 +89,7 @@ function SlotBookingPage() {
         await fetchSlots(availId, date, accessToken);
       } catch (err) {
         console.error(err);
-        alert("Unable to load availability");
+        // alert("Unable to load availability");
       } finally {
         setLoading(false);
       }
@@ -132,7 +132,6 @@ function SlotBookingPage() {
   return (
     <>
       <Header />
-
       <div className="container mt-4">
         <div className="mb-3">
           <h6 className="mb-0">{monthYear}</h6>
@@ -202,17 +201,17 @@ function SlotBookingPage() {
                     return (
                       <div
                         key={index}
-                        className={`slot-box border rounded ${
-                          isBooked
-                            ? "bg-secondary"
-                            : "bg-white border-primary"
-                        }`}
+                        className={`slot-capacity d-flex align-items-center justify-content-center fw-semibold
+                          ${isBooked ? "slot-booked" : "slot-available"}
+                        `}
                         onClick={() => {
                           if (!isBooked) handleSlotBooking(slot);
                         }}
                         role="button"
                         aria-disabled={isBooked}
-                      />
+                      >
+                        {index + 1}
+                      </div>
                     );
                   })}
                 </div>

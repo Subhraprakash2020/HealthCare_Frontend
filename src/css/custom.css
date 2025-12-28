@@ -377,17 +377,30 @@ body {
   background-color: #5ab800 !important;
 }
 
-.slot-box {
-  width: 32px;
-  height: 32px;
+.slot-capacity {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  border: 2px solid;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+}
+
+.slot-available {
+  background-color: #ffffff;
+  border-color: #5ab800;
+  color: #5ab800;
   cursor: pointer;
 }
 
-.slot-box.bg-secondary {
-  cursor: not-allowed;
-  opacity: 0.6;
+.slot-available:hover {
+  background-color: #5ab800;
+  color: #ffffff;
 }
 
-.slot-box.bg-white:hover {
-  background-color: #e9f1ff;
+.slot-booked {
+  background-color: #adb5bd;
+  border-color: #adb5bd;
+  color: #ffffff;
+  cursor: not-allowed;
 }
