@@ -35,7 +35,6 @@ function SlotBookingPage() {
   const [slots, setSlots] = useState([]);
   const [loading, setLoading] = useState(false);
   const [selectedSlot, setSelectedSlot] = useState(null);
-  const [selectedSlotId, setSelectedSlotId] = useState(null);
   const [selectedSeat, setSelectedSeat] = useState(null);
 
 
@@ -125,12 +124,6 @@ function SlotBookingPage() {
     const d = new Date(startDate);
     d.setDate(d.getDate() + 1);
     setStartDate(d.toISOString().split("T")[0]);
-  };
-
-  const handleSlotBooking = (slot) => {
-    navigate(
-      `/patient/confirm-booking?slotId=${slot.id}&providerId=${providerId}&date=${selectedDate}`
-    );
   };
 
   const formatTime = (time) => (time ? time.substring(0, 5) : "");

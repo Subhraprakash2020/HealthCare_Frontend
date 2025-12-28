@@ -1,6 +1,7 @@
 import { Card, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 function BookingSummary({ slot, providerId, selectedDate }) {
   const navigate = useNavigate();
@@ -68,6 +69,20 @@ function BookingSummary({ slot, providerId, selectedDate }) {
 }
 
 export default BookingSummary;
-
-
+BookingSummary.propTypes = {
+  slot: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    startTime: PropTypes.string.isRequired,
+    endTime: PropTypes.string.isRequired,
+    maxCapacity: PropTypes.number.isRequired,
+    bookedCount: PropTypes.number.isRequired,
+  }),
+  providerId: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
+  selectedDate: PropTypes.string.isRequired,
+  selectedSeat: PropTypes.shape({
+    slotId: PropTypes.string.isRequired,
+    seatNumber: PropTypes.number.isRequired,
+  }),
+};
 
