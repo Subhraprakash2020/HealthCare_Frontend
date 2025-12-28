@@ -15,6 +15,7 @@ import ProviderDetails from './components/patients/layout/ProviderDetails';
 import AppLayout from './layout/AppLayout';
 import ProfileEdit from './components/patients/layout/ProfileEdit';
 import PatientProfile from './components/patients/layout/PatientProfile';
+import SlotBookingPage from './components/patients/layout/SlotBookingPage';
 
 class App extends Component {
   render(){
@@ -60,6 +61,10 @@ class App extends Component {
                   <ProfileEdit/>
                 </ProtectedRoute>
               }
+            />
+            <Route
+              path="/patient/slot/:availabilityId"
+              element={<SlotBookingPage />}
             />
           </Routes>
        

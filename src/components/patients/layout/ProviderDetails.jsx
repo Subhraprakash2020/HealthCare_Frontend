@@ -200,7 +200,7 @@ function ProviderDetails() {
             </Card>
           </Col>
           <Col lg={4} md={12}>
-            <ProviderAction provider={provider} />
+            <ProviderAction providerId={providerId} />
           </Col>
         </Row>
         <Button variant="secondary" onClick={() => navigate(-1)}>

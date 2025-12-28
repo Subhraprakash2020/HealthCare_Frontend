@@ -1,8 +1,12 @@
 import React from "react";
 import { Card, Button } from "react-bootstrap";
-import "../../../css/custom.css";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import PropTypes from "prop-types";
 
-function ProviderAction() {
+
+function ProviderAction({ providerId }) {
+  const navigate = useNavigate();
 
   const handleEmailShare = () => {
     const subject = "Provider Profile";
@@ -15,10 +19,48 @@ function ProviderAction() {
   };
 
   const handleDirections = () => {
-    window.open(
-      `https://www.google.com/maps/search/`,
-      "_blank"
-    );
+    window.open("https://www.google.com/maps/search/", "_blank");
+  };
+
+  const handleBooking = async () => {
+    if (!providerId) {
+      alert("Provider ID missing");
+      return;
+    }
+
+    try {
+      const storedUser = localStorage.getItem("user");
+      if (!storedUser) {
+        alert("Please login to book appointment");
+        return;
+      }
+
+      const { accessToken } = JSON.parse(storedUser);
+      const response = await axios.get(
+        `http://localhost:8080/healthcare/patient/booking/availability/${providerId}`,{
+          headers: {
+            Authorization: `Bearer ${accessToken}`,}
+        }
+      );
+
+      if (!response.data || response.data.length === 0) {
+        // alert("No future availability found");
+        navigate(
+          `/patient/slot/providerId=${providerId}`
+        );
+        return;
+      }
+
+      const availabilityId = response.data[0].id;
+      console.log("availabilityId",availabilityId)
+
+      navigate(
+        `/patient/slot/${availabilityId}?providerId=${providerId}`
+      );
+    } catch (error) {
+      console.error("Error fetching availability", error);
+      alert("Unable to fetch availability");
+    }
   };
 
   return (
@@ -52,7 +94,6 @@ function ProviderAction() {
           <Button variant="success" className="w-100 action-btn">
             <i className="bi bi-plus-circle me-2"></i> Add to List
           </Button>
-
         </Card.Body>
       </Card>
 
@@ -79,8 +120,26 @@ function ProviderAction() {
           </Button>
         </Card.Body>
       </Card>
+
+      <Card className="booking-button-card mt-4">
+        <Button
+          variant="primary"
+          className="w-100 btn-custom-green"
+          onClick={handleBooking}
+        >
+          Book Appointment
+        </Button>
+      </Card>
     </>
   );
 }
 
 export default ProviderAction;
+
+ProviderAction.propTypes = {
+  providerId: PropTypes.oneOfType([
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
+};
+
