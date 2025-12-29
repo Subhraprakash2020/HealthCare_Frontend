@@ -16,17 +16,35 @@ import AppLayout from './layout/AppLayout';
 import ProfileEdit from './components/patients/layout/ProfileEdit';
 import PatientProfile from './components/patients/layout/PatientProfile';
 import SlotBookingPage from './components/patients/layout/SlotBookingPage';
+import AdminSignIn from './components/admin/AdminSignIn';
 
 class App extends Component {
   render(){
     return (
       <BrowserRouter>
-        <AppLayout>
-          <Routes>
-            <Route path='/' element={<Home/>}/>
-            <Route path="/signin" element={<SignIn/>}/>
-            <Route path="/signup" element={<SignUp/>}/>
-            <Route path="/patient/dashboard" element={
+      <AppLayout>
+        <Routes>
+          <Route path='/' element={<Home/>}/>
+          <Route path='/healthcare/admin/signin' element={<AdminSignIn/>}/>
+          <Route path="/signin" element={<SignIn/>}/>
+          <Route path="/signup" element={<SignUp/>}/>
+          <Route path="/patient/dashboard" element={
+            <ProtectedRoute>
+              <Dashboard/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/provider-search-results" element={
+            <ProtectedRoute>
+              <SearchResults/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/profile/edit" element={
+            <ProtectedRoute>
+              <ProfileEdit/>
+            </ProtectedRoute>
+          }/>
+          <Route path="/providers/details/:providerId"
+            element={
               <ProtectedRoute>
                 <Dashboard/>
               </ProtectedRoute>
