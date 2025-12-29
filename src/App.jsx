@@ -7,7 +7,8 @@ import Home from './components/patients/home/Home';
 import './App.css';
 import { Form } from 'react-bootstrap';
 import './css/custom.css';
-import ProtectedRoute from './ProtectedRoute';
+import PatientProtectedRoute from './ProtectedRoute/PatientProtectedRoute';
+import ProviderProtectedRoute from './ProtectedRoute/ProviderProtectedRoute'
 import Dashboard from './components/patients/layout/Dashboard';
 import SearchResults from './components/patients/layout/SearchResults';
 import ProfileImageEdit from './components/patients/layout/ProfileImageEdit';
@@ -33,78 +34,86 @@ class App extends Component {
         <AppLayout>
           <Routes>
             <Route path='/' element={<Home/>}/>
+            {/* Admin Routes */}
             <Route path='/healthcare/admin/signin' element={<AdminSignIn/>}/>
             <Route path='/healthcare/admin/AdminDashboard' element={
               <AdminProtectedRoute>
                 <AdminDashboard/>
               </AdminProtectedRoute>
             }/>
+
+            {/* Patient Routes */}
             <Route path="/signin" element={<SignIn/>}/>
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/patient/dashboard" element={
-              <ProtectedRoute>
+              <PatientProtectedRoute>
                 <Dashboard/>
-              </ProtectedRoute>
+              </PatientProtectedRoute>
             }/>
             <Route path="/provider-search-results" element={
-              <ProtectedRoute>
+              <PatientProtectedRoute>
                 <SearchResults/>
-              </ProtectedRoute>
+              </PatientProtectedRoute>
             }/>
             <Route path="/profile/edit" element={
-              <ProtectedRoute>
+              <PatientProtectedRoute>
                 <ProfileEdit/>
-              </ProtectedRoute>
+              </PatientProtectedRoute>
             }/>
             <Route path="/provider-search-results" element={
-              <ProtectedRoute>
+              <PatientProtectedRoute>
                 <SearchResults/>
-              </ProtectedRoute>
+              </PatientProtectedRoute>
             }/>
             <Route path="/profileImage/edit" element={
-              <ProtectedRoute>
+              <PatientProtectedRoute>
                 <ProfileImageEdit/>
-              </ProtectedRoute>
+              </PatientProtectedRoute>
             }/>
             <Route path="/providers/details/:providerId"
               element={
-                <ProtectedRoute>
+                <PatientProtectedRoute>
                   <ProviderDetails />
-                </ProtectedRoute>
+                </PatientProtectedRoute>
               }
             />
             <Route path="/profileInfo"
               element={
-                <ProtectedRoute>
+                <PatientProtectedRoute>
                   <PatientProfile/>
-                </ProtectedRoute>
+                </PatientProtectedRoute>
               }
             />
             <Route path="/profileInfo/edit"
               element={
-                <ProtectedRoute>
+                <PatientProtectedRoute>
                   <ProfileEdit/>
-                </ProtectedRoute>
+                </PatientProtectedRoute>
               }
             />
             <Route
               path="/patient/slot/:availabilityId"
-              element={<SlotBookingPage />}
+              element={
+                <PatientProtectedRoute>
+                  <SlotBookingPage />
+                </PatientProtectedRoute>
+              }
             />
             <Route path="/patient/booking-success" 
               element={
-                <ProtectedRoute>
+                <PatientProtectedRoute>
                   <BookingSuccess />
-                </ProtectedRoute>
+                </PatientProtectedRoute>
               } />
-              {/* Provider routes */}
+
+          {/* Provider routes */}
           <Route path="/provider" element={<ProviderHome />} />
           <Route path="/provider/signin" element={<ProviderSignin />} />
           <Route path="/provider/signup" element={<ProviderSignup />} />
           <Route path="/provider/dashboard" element={
-            <ProtectedRoute role="PROVIDER">
+            <ProviderProtectedRoute>
               <ProviderDashboard />
-            </ProtectedRoute>
+            </ProviderProtectedRoute>
           } />
           </Routes>
        

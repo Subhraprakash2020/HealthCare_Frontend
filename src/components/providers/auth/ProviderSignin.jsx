@@ -3,10 +3,11 @@ import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import "../../../css/ProviderAuth.css"; 
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import ProviderHeader from "../../providers/home/ProviderHeader";
-import doctorImg from "../Images/login-doctor.png";
 import axios from "axios";
+import {useNavigate} from 'react-router-dom';
 
 function ProviderSignin() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -27,8 +28,7 @@ function ProviderSignin() {
       localStorage.setItem("token", token);
       localStorage.setItem("user", JSON.stringify(user));
 
-      alert("Login Successful! Redirecting...");
-      window.location.href = "/provider/dashboard";
+      navigate("/provider/dashboard");
 
     } catch (error) {
       console.error("Login failed:", error.response?.data || error);
@@ -48,12 +48,6 @@ function ProviderSignin() {
           <Col
             md={6}
             className="left-panel d-none d-md-flex align-items-center justify-content-center p-0"
-            style={{
-              backgroundImage: `url(${doctorImg})`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              backgroundRepeat: "no-repeat",
-            }}
           >
             <div className="left-panel-textbox text-center text-white p-4">
               <h3 className="fw-bold">Welcome, Healthcare Provider</h3>

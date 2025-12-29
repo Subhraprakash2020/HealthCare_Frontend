@@ -5,7 +5,9 @@
 
 /* LEFT IMAGE - CLEAR NOW (blur removed) */
 .left-panel {
-  filter: brightness(0.8); /* slight dark to make text readable */
+  background-image: url("../components/providers/Images/login-doctor.png");
+  filter: brightness(0.8);
+  background-size: cover;
 }
 
 /* TRANSPARENT INFO BOX ON IMAGE */

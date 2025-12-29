@@ -1,22 +1,15 @@
-/* eslint-disable react/prop-types */
-import React from "react";
-import { Navigate } from "react-router-dom";
+// /* eslint-disable react/prop-types */
+// import React from "react";
+// import { Navigate } from "react-router-dom";
 
-function ProtectedRoute({ children, role }) {
-  const token = localStorage.getItem("token");
-  const user = JSON.parse(localStorage.getItem("user"));
+// function ProtectedRoute({ children }) {
+//   const token = localStorage.getItem("token");
 
-  console.log("ProtectedRoute user:", user);
+//   if (!token) {
+//     return <Navigate to="/signin" replace />;
+//   }
 
-  if (!user) return <Navigate to="/provider/signin" replace />;
+//   return children;
+// }
 
-  if (role && user.role !== role) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  if (!token) return <Navigate to="/provider/signin" replace />;
-
-  return children;
-}
-
-export default ProtectedRoute;
+// export default ProtectedRoute;
