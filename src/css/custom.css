@@ -354,6 +354,7 @@ body {
   background-color: #5aa800;
   border-radius: 6px;
   overflow: hidden;
+  color: white;
 }
 
 .action-btn {
@@ -403,4 +404,11 @@ body {
   border-color: #adb5bd;
   color: #ffffff;
   cursor: not-allowed;
+}
+
+.slot-selected {
+  background-color: #5ab800 !important; /* Bootstrap success */
+  border-color: #5ab800 !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.4);
 }
