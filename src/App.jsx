@@ -50,12 +50,6 @@ class App extends Component {
                 <ProfileEdit/>
               </ProtectedRoute>
             }/>
-            <Route path="/providers/details/:providerId"
-              element={
-                <ProtectedRoute>
-                  <Dashboard/>
-                </ProtectedRoute>
-              }/>
             <Route path="/provider-search-results" element={
               <ProtectedRoute>
                 <SearchResults/>

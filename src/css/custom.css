@@ -403,6 +403,7 @@ body {
   border-color: #adb5bd;
   color: #ffffff;
   cursor: not-allowed;
+}
 .admin-signin-bg {
   position: relative;
   overflow: hidden;
@@ -427,4 +428,4 @@ body {
   inset: 0;
   background: rgba(0, 0, 0, 0.25);
   z-index: 1;
-}}
+}
