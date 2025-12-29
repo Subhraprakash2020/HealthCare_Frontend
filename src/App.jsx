@@ -19,6 +19,7 @@ import SlotBookingPage from './components/patients/layout/SlotBookingPage';
 import AdminSignIn from './components/admin/AdminSignIn';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
+import BookingSuccess from './components/patients/layout/BookingSuccess';
 
 class App extends Component {
   render(){
@@ -85,6 +86,12 @@ class App extends Component {
               path="/patient/slot/:availabilityId"
               element={<SlotBookingPage />}
             />
+            <Route path="/patient/booking-success" 
+              element={
+                <ProtectedRoute>
+                  <BookingSuccess />
+                </ProtectedRoute>
+              } />
           </Routes>
        
         </AppLayout>
