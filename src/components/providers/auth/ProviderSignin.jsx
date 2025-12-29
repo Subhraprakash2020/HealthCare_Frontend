@@ -1,0 +1,122 @@
+import React, { useState } from "react";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
+import "../../../css/ProviderAuth.css"; 
+import { FaGoogle, FaGithub } from "react-icons/fa";
+import ProviderHeader from "../../providers/home/ProviderHeader";
+import doctorImg from "../Images/login-doctor.png";
+import axios from "axios";
+
+function ProviderSignin() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await axios.post("http://localhost:8080/healthcare/providers/login", {
+        email,
+        passWord: password, // <-- must match backend field name
+      });
+
+      const { token, user } = response.data; 
+
+      // Store required details
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
+
+      alert("Login Successful! Redirecting...");
+      window.location.href = "/provider/dashboard";
+
+    } catch (error) {
+      console.error("Login failed:", error.response?.data || error);
+      alert(error.response?.data?.message || "❌ Invalid credentials or server error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <ProviderHeader className="provider-header shadow-header"/>
+      <Container fluid className="login-container">
+        <Row className="h-100">
+
+          {/* LEFT SECTION */}
+          <Col
+            md={6}
+            className="left-panel d-none d-md-flex align-items-center justify-content-center p-0"
+            style={{
+              backgroundImage: `url(${doctorImg})`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              backgroundRepeat: "no-repeat",
+            }}
+          >
+            <div className="left-panel-textbox text-center text-white p-4">
+              <h3 className="fw-bold">Welcome, Healthcare Provider</h3>
+              <p className="mb-0">Empowering care with secure digital access.</p>
+            </div>
+          </Col>
+
+          {/* RIGHT SECTION - LOGIN */}
+          <Col md={6} className="d-flex align-items-center justify-content-center bg-white p-5">
+            <div className="login-form-wrapper">
+              <h2 className="mb-4 fw-bold">Sign In</h2>
+
+              <Form onSubmit={handleLogin}>
+                <Form.Group className="mb-3">
+                  <Form.Control
+                    type="email"
+                    placeholder="Email"
+                    value={email}
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-2">
+                  <Form.Control
+                    type="password"
+                    placeholder="Password"
+                    value={password}
+                    required
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Form.Group>
+
+                <div className="text-end mb-4">
+                  <a href="/provider/forgot-password" className="forgot-password-link">
+                    Forgot Password?
+                  </a>
+                </div>
+
+                <Button type="submit" disabled={loading} className="w-100 login-button">
+                  {loading ? "Logging in..." : "Login"}
+                </Button>
+              </Form>
+
+              <div className="divider my-4">
+                <span className="or-text">OR</span>
+              </div>
+
+              <div className="d-flex gap-3 justify-content-center mb-4">
+                <Button variant="outline-secondary" className="w-50"><FaGoogle className="me-2" /> Google</Button>
+                <Button variant="outline-dark" className="w-50"><FaGithub className="me-2" /> GitHub</Button>
+              </div>
+
+              <p className="text-center mt-3">
+                Don't have an account?
+                <a href="/provider/signup" className="signup-link"> Sign Up</a>
+              </p>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
+}
+
+export default ProviderSignin;

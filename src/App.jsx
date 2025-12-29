@@ -20,6 +20,11 @@ import AdminSignIn from './components/admin/AdminSignIn';
 import AdminDashboard from './components/admin/AdminDashboard';
 import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
 import BookingSuccess from './components/patients/layout/BookingSuccess';
+import ProviderHome from './components/providers/home/ProviderHome';
+//import { ProviderSignin, ProviderSignup } from './components/providers/auth/ProviderAuth';
+import ProviderSignin from './components/providers/auth/ProviderSignin';
+import ProviderSignup from './components/providers/auth/ProviderSignup';
+import ProviderDashboard from './components/providers/dashboard/ProviderDashboard';
 
 class App extends Component {
   render(){
@@ -92,6 +97,15 @@ class App extends Component {
                   <BookingSuccess />
                 </ProtectedRoute>
               } />
+              {/* Provider routes */}
+          <Route path="/provider" element={<ProviderHome />} />
+          <Route path="/provider/signin" element={<ProviderSignin />} />
+          <Route path="/provider/signup" element={<ProviderSignup />} />
+          <Route path="/provider/dashboard" element={
+            <ProtectedRoute role="PROVIDER">
+              <ProviderDashboard />
+            </ProtectedRoute>
+          } />
           </Routes>
        
         </AppLayout>

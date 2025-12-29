@@ -1,0 +1,90 @@
+.login-container {
+  height: 100vh;
+  max-width: 100vw;
+}
+
+/* LEFT IMAGE - CLEAR NOW (blur removed) */
+.left-panel {
+  filter: brightness(0.8); /* slight dark to make text readable */
+}
+
+/* TRANSPARENT INFO BOX ON IMAGE */
+.left-panel-textbox {
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(3px);
+  padding: 20px 25px;
+  border-radius: 10px;
+  max-width: 350px;
+}
+
+/* FORM WRAPPER */
+.login-form-wrapper {
+  max-width: 400px;
+  width: 100%;
+}
+
+/* BUTTONS */
+.login-button {
+  background-color: #5c3e98 !important;
+  border-color: #5c3e98 !important;
+  border-radius: 8px !important;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+.login-button:hover {
+  background-color: #4a327a !important;
+  border-color: #4a327a !important;
+}
+
+/* OR DIVIDER */
+.divider {
+  position: relative;
+  text-align: center;
+}
+.divider::before {
+  content: '';
+  border-top: 1px solid #ddd;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+}
+.or-text {
+  background: #fff;
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+  color: #6c757d;
+}
+
+/* LINKS */
+.forgot-password-link,
+.signup-link {
+  color: #5c3e98;
+  text-decoration: none;
+}
+.forgot-password-link:hover,
+.signup-link:hover {
+  text-decoration: underline;
+}
+.shadow-header {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+  z-index: 1000;
+  position: relative;
+}
+
+.shadow-header:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
+  transition: 0.3s ease;
+}
+.shadow-header {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.10);
+  z-index: 1000;
+  position: relative;
+}
+
+.shadow-header:hover {
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.13);
+  transition: 0.3s ease;
+}
+ 
