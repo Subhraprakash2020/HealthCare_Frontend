@@ -17,38 +17,45 @@ import ProfileEdit from './components/patients/layout/ProfileEdit';
 import PatientProfile from './components/patients/layout/PatientProfile';
 import SlotBookingPage from './components/patients/layout/SlotBookingPage';
 import AdminSignIn from './components/admin/AdminSignIn';
+import AdminDashboard from './components/admin/AdminDashboard';
+import AdminProtectedRoute from './components/admin/AdminProtectedRoute';
 
 class App extends Component {
   render(){
     return (
       <BrowserRouter>
-      <AppLayout>
-        <Routes>
-          <Route path='/' element={<Home/>}/>
-          <Route path='/healthcare/admin/signin' element={<AdminSignIn/>}/>
-          <Route path="/signin" element={<SignIn/>}/>
-          <Route path="/signup" element={<SignUp/>}/>
-          <Route path="/patient/dashboard" element={
-            <ProtectedRoute>
-              <Dashboard/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/provider-search-results" element={
-            <ProtectedRoute>
-              <SearchResults/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/profile/edit" element={
-            <ProtectedRoute>
-              <ProfileEdit/>
-            </ProtectedRoute>
-          }/>
-          <Route path="/providers/details/:providerId"
-            element={
+        <AppLayout>
+          <Routes>
+            <Route path='/' element={<Home/>}/>
+            <Route path='/healthcare/admin/signin' element={<AdminSignIn/>}/>
+            <Route path='/healthcare/admin/AdminDashboard' element={
+              <AdminProtectedRoute>
+                <AdminDashboard/>
+              </AdminProtectedRoute>
+            }/>
+            <Route path="/signin" element={<SignIn/>}/>
+            <Route path="/signup" element={<SignUp/>}/>
+            <Route path="/patient/dashboard" element={
               <ProtectedRoute>
                 <Dashboard/>
               </ProtectedRoute>
             }/>
+            <Route path="/provider-search-results" element={
+              <ProtectedRoute>
+                <SearchResults/>
+              </ProtectedRoute>
+            }/>
+            <Route path="/profile/edit" element={
+              <ProtectedRoute>
+                <ProfileEdit/>
+              </ProtectedRoute>
+            }/>
+            <Route path="/providers/details/:providerId"
+              element={
+                <ProtectedRoute>
+                  <Dashboard/>
+                </ProtectedRoute>
+              }/>
             <Route path="/provider-search-results" element={
               <ProtectedRoute>
                 <SearchResults/>

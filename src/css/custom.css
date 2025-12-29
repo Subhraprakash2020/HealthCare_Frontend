@@ -403,4 +403,28 @@ body {
   border-color: #adb5bd;
   color: #ffffff;
   cursor: not-allowed;
+.admin-signin-bg {
+  position: relative;
+  overflow: hidden;
 }
+
+.admin-signin-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("/src/images/AdminSignInBackGround.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  filter: blur(6px);       
+  transform: scale(1.1);   
+  z-index: 0;
+}
+
+.admin-signin-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}}
