@@ -106,15 +106,15 @@ class App extends Component {
                 </PatientProtectedRoute>
               } />
 
-          {/* Provider routes */}
-          <Route path="/provider" element={<ProviderHome />} />
-          <Route path="/provider/signin" element={<ProviderSignin />} />
-          <Route path="/provider/signup" element={<ProviderSignup />} />
-          <Route path="/provider/dashboard" element={
-            <ProviderProtectedRoute>
-              <ProviderDashboard />
-            </ProviderProtectedRoute>
-          } />
+            {/* Provider routes */}
+            <Route path="/provider" element={<ProviderHome />} />
+            <Route path="/provider/signin" element={<ProviderSignin />} />
+            <Route path="/provider/signup" element={<ProviderSignup />} />
+            <Route path="/provider/dashboard" element={
+              <ProviderProtectedRoute>
+                <ProviderDashboard />
+              </ProviderProtectedRoute>
+            } />
           </Routes>
        
         </AppLayout>

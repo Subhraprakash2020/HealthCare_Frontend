@@ -1,38 +1,62 @@
 import React, { useState } from "react";
-import { Form, Button, Container, Row, Col } from "react-bootstrap";
-import "../../../css/ProviderAuth.css"; 
+import { Form, Button, Container, Row, Col, Alert } from "react-bootstrap";
+import "../../../css/ProviderAuth.css";
 import { FaGoogle, FaGithub } from "react-icons/fa";
 import ProviderHeader from "../../providers/home/ProviderHeader";
 import axios from "axios";
-import {useNavigate} from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function ProviderSignin() {
   const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setError("");
 
     try {
-      const response = await axios.post("http://localhost:8080/healthcare/providers/login", {
-        email,
-        passWord: password, // <-- must match backend field name
-      });
+      const response = await axios.post(
+        "http://localhost:8080/healthcare/providers/login",
+        {
+          email,
+          passWord: password, // ✅ matches backend DTO
+        }
+      );
 
-      const { token, user } = response.data; 
+      const { token, id, email: providerEmail, role } = response.data;
 
-      // Store required details
+      // 🔒 Extra safety: frontend role check
+      if (role !== "PROVIDER") {
+        setError("Access denied: Provider account required");
+        setLoading(false);
+        return;
+      }
+
+      // ✅ Store auth info
       localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id,
+          email: providerEmail,
+          role,
+        })
+      );
 
       navigate("/provider/dashboard");
 
-    } catch (error) {
-      console.error("Login failed:", error.response?.data || error);
-      alert(error.response?.data?.message || "❌ Invalid credentials or server error");
+    } catch (err) {
+      const message =
+        err.response?.data ||
+        err.response?.data?.message ||
+        "❌ Invalid credentials or access denied";
+
+      setError(message);
     } finally {
       setLoading(false);
     }
@@ -40,7 +64,8 @@ function ProviderSignin() {
 
   return (
     <>
-      <ProviderHeader className="provider-header shadow-header"/>
+      <ProviderHeader className="provider-header shadow-header" />
+
       <Container fluid className="login-container">
         <Row className="h-100">
 
@@ -55,10 +80,12 @@ function ProviderSignin() {
             </div>
           </Col>
 
-          {/* RIGHT SECTION - LOGIN */}
+          {/* RIGHT SECTION */}
           <Col md={6} className="d-flex align-items-center justify-content-center bg-white p-5">
             <div className="login-form-wrapper">
               <h2 className="mb-4 fw-bold">Sign In</h2>
+
+              {error && <Alert variant="danger">{error}</Alert>}
 
               <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3">
@@ -87,7 +114,11 @@ function ProviderSignin() {
                   </a>
                 </div>
 
-                <Button type="submit" disabled={loading} className="w-100 login-button">
+                <Button
+                  type="submit"
+                  disabled={loading}
+                  className="w-100 login-button"
+                >
                   {loading ? "Logging in..." : "Login"}
                 </Button>
               </Form>
@@ -97,8 +128,12 @@ function ProviderSignin() {
               </div>
 
               <div className="d-flex gap-3 justify-content-center mb-4">
-                <Button variant="outline-secondary" className="w-50"><FaGoogle className="me-2" /> Google</Button>
-                <Button variant="outline-dark" className="w-50"><FaGithub className="me-2" /> GitHub</Button>
+                <Button variant="outline-secondary" className="w-50">
+                  <FaGoogle className="me-2" /> Google
+                </Button>
+                <Button variant="outline-dark" className="w-50">
+                  <FaGithub className="me-2" /> GitHub
+                </Button>
               </div>
 
               <p className="text-center mt-3">

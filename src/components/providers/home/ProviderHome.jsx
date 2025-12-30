@@ -6,10 +6,10 @@ function ProviderHome() {
     <>
       <ProviderHeader />
       <div className="provider-body">
-      <div className="container mt-4">
-        <h2>Provider Dashboard</h2>
-        <p>Welcome, Healthcare Provider!</p>
-      </div>
+        <div className="container mt-4">
+          <h2>Provider Dashboard</h2>
+          <p>Welcome, Healthcare Provider!</p>
+        </div>
       </div>
     </>
   );
