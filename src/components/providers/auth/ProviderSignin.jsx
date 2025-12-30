@@ -24,13 +24,13 @@ function ProviderSignin() {
         "http://localhost:8080/healthcare/providers/login",
         {
           email,
-          passWord: password, // ✅ matches backend DTO
+          passWord: password, // must match backend DTO
         }
       );
 
       const { token, id, email: providerEmail, role } = response.data;
 
-      // 🔒 Extra safety: frontend role check
+      // 🔒 Safety check
       if (role !== "PROVIDER") {
         setError("Access denied: Provider account required");
         setLoading(false);
@@ -49,11 +49,10 @@ function ProviderSignin() {
       );
 
       navigate("/provider/dashboard");
-
     } catch (err) {
       const message =
-        err.response?.data ||
         err.response?.data?.message ||
+        err.response?.data ||
         "❌ Invalid credentials or access denied";
 
       setError(message);
@@ -69,7 +68,7 @@ function ProviderSignin() {
       <Container fluid className="login-container">
         <Row className="h-100">
 
-          {/* LEFT SECTION */}
+          {/* LEFT PANEL */}
           <Col
             md={6}
             className="left-panel d-none d-md-flex align-items-center justify-content-center p-0"
@@ -80,8 +79,11 @@ function ProviderSignin() {
             </div>
           </Col>
 
-          {/* RIGHT SECTION */}
-          <Col md={6} className="d-flex align-items-center justify-content-center bg-white p-5">
+          {/* RIGHT PANEL */}
+          <Col
+            md={6}
+            className="d-flex align-items-center justify-content-center bg-white p-5"
+          >
             <div className="login-form-wrapper">
               <h2 className="mb-4 fw-bold">Sign In</h2>
 
@@ -109,7 +111,10 @@ function ProviderSignin() {
                 </Form.Group>
 
                 <div className="text-end mb-4">
-                  <a href="/provider/forgot-password" className="forgot-password-link">
+                  <a
+                    href="/provider/forgot-password"
+                    className="forgot-password-link"
+                  >
                     Forgot Password?
                   </a>
                 </div>
@@ -136,12 +141,17 @@ function ProviderSignin() {
                 </Button>
               </div>
 
+              {/* ✅ FIXED APOSTROPHE */}
               <p className="text-center mt-3">
-                Don't have an account?
-                <a href="/provider/signup" className="signup-link"> Sign Up</a>
+                Don&apos;t have an account?
+                <a href="/provider/signup" className="signup-link">
+                  {" "}
+                  Sign Up
+                </a>
               </p>
             </div>
           </Col>
+
         </Row>
       </Container>
     </>
