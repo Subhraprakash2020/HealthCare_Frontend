@@ -89,7 +89,7 @@ function Dashboard() {
       const data = await res.json();
       console.log("Search results:", data);
 
-      navigate("/provider-search-results", {
+      navigate("/patient/provider-search-results", {
         state: { results: data }
       });
 

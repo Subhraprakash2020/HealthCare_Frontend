@@ -23,7 +23,7 @@ function SearchResults() {
   }
 
   const goToDetails = (item) => {
-    navigate(`/providers/details/${item.provider?.id}`, {
+    navigate(`/patient/providers/details/${item.provider?.id}`, {
       state: { provider: item }
     });
   };
