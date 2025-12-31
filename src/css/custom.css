@@ -107,6 +107,63 @@
   margin: 0;
   padding: 20px;
 }
+/* Navbar styles */
+.provider-navbar {
+  background-color: #ffffff !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Button styles */
+.provider-btn {
+  border: 1px solid rgb(79, 70, 229);
+  color: rgb(99, 102, 241);
+  background-color: transparent;
+  font-weight: 500;
+}
+
+.provider-btn:hover {
+  background-color: #a754ad;
+  color: #ffffff;
+  border-color: #75489c;
+}
+.provider-body {
+  background-color: #f8f9fa; /* milk color */
+  min-height: 100vh;
+  padding-top: 1rem;
+}
+.provider-body .container {
+  background-color: #f8f9fa; /* milk color */
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+/* Left side image panel */
+.login-image {
+  background: url("../Images/login-doctor.png") no-repeat center center/cover;
+}
+
+/* Reduced + centered form container */
+.login-box {
+  max-width: 420px;
+}
+
+/* Theme color */
+.text-primary-custom {
+  color: #563d94;
+}
+
+.btn-primary-custom {
+  background-color: #563d94;
+  border-color: #563d94;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Focus effect */
+.form-control:focus {
+  border-color: #7b5cd6 !important;
+  box-shadow: 0 0 4px rgba(123,92,214,0.6) !important;
+}
 
 body {
   background-color: #f2f4f7;
