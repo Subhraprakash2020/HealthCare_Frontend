@@ -34,7 +34,7 @@ function AdminSignIn() {
       const token = await response.text();
       localStorage.setItem("adminToken", token.replace("JWT: ", ""));
 
-      navigate("/healthcare/admin/AdminDashboard");
+      navigate("/admin/dashboard");
 
     } catch (error) {
       setErrorMsg(error.message);

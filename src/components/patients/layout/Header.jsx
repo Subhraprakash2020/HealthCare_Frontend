@@ -22,7 +22,7 @@ function Header() {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
 
-    navigate("/signin");
+    navigate("/patient/signin");
   };
 
   useEffect(() => {
@@ -85,27 +85,27 @@ function Header() {
                 </span>
               }
             >
-              <NavDropdown.Item as={Link} to="/profileInfo">
+              <NavDropdown.Item as={Link} to="/patient/profileInfo">
                 <i className="bi bi-person-circle me-2"></i>
                 My Profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/profileInfo/edit">
+              <NavDropdown.Item as={Link} to="/patient/profileInfo/edit">
                 <i className="bi bi-person-fill-gear me-2"></i>
                 Edit Profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/profileImage/edit">
+              <NavDropdown.Item as={Link} to="/patient/profileImage/edit">
                 <i className="bi bi-cloud-upload-fill me-2"></i>
                 Upload my profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/profile/shared">
+              <NavDropdown.Item as={Link} to="/patient/profile/shared">
                 <i className="bi bi-share-fill me-2"></i>
                 Shared public profile
               </NavDropdown.Item>
 
-              <NavDropdown.Item as={Link} to="/another-link">
+              <NavDropdown.Item as={Link} to="/patient/another-link">
                 <i className="bi bi-link-45deg me-2"></i>
                 Another link
               </NavDropdown.Item>

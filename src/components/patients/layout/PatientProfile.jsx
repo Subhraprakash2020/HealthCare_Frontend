@@ -116,7 +116,7 @@ function PatientProfile(){
 
             <div className="d-flex justify-content-center gap-3 mt-4">
 
-              <Button as={Link} to='/profileInfo/edit' className="btn-custom-green">
+              <Button as={Link} to='/patient/profileInfo/edit' className="btn-custom-green">
                 <i className="bi bi-pencil-square me-2"></i>
                 Edit Profile
               </Button>
