@@ -32,7 +32,7 @@ const ProviderHeader = () => {
           </span>
         </Navbar.Brand>
 
-         <Nav className="ms-auto d-flex align-items-center">
+        <Nav className="ms-auto d-flex align-items-center">
           <Nav.Link
             as={Link}
             to="/provider/create-availability"

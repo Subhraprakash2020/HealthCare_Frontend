@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Container, Table, Button, Alert } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const AvailabilityList = () => {
   const [availabilities, setAvailabilities] = useState([]);
   const [message, setMessage] = useState("");
   const token = localStorage.getItem("token");
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadAvailabilities();
@@ -26,15 +28,21 @@ const AvailabilityList = () => {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setMessage("Slots generated successfully");
+
+      navigate(`/provider/availability/${availabilityId}/slots`);
+
     } catch (err) {
-      setMessage(err.response?.data || "Slots already exist");
+      if (err.response?.status === 409) {
+        navigate(`/provider/availability/${availabilityId}/slots`);
+      } else {
+        setMessage(err.response?.data || "Slot generation failed");
+      }
     }
   };
 
   return (
     <Container className="mt-5">
-      {message && <Alert>{message}</Alert>}
+      {message && <Alert variant="danger">{message}</Alert>}
 
       <Table bordered hover>
         <thead>

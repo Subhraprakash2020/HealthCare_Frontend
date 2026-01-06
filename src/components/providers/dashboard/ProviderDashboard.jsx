@@ -5,7 +5,7 @@ function ProviderDashboard() {
   
   return (
     <>
-    <ProviderHeader/>
+      <ProviderHeader/>
     </>
   );
 }
