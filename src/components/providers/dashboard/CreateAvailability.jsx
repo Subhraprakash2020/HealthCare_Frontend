@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Container, Card, Form, Button, Table, Alert, Modal } from "react-bootstrap";
+import { Container, Card, Form, Button, Table, Alert } from "react-bootstrap";
 import axios from "axios";
 import ProviderHeader from "./ProviderHeader";
 import { useNavigate } from "react-router-dom";
@@ -18,41 +18,40 @@ const CreateAvailability = () => {
 
   const [availabilities, setAvailabilities] = useState([]);
   const [message, setMessage] = useState("");
+  const [variant, setVariant] = useState("success");
   const [editing, setEditing] = useState(null);
 
+  /* ---------- SAFE ERROR MESSAGE ---------- */
+  const getErrorMessage = (err, fallback) => {
+    if (typeof err?.response?.data === "string") return err.response.data;
+    if (typeof err?.response?.data === "object")
+      return err.response.data.message || fallback;
+    return fallback;
+  };
+
+  /* ---------- LOAD AVAILABILITIES ---------- */
   useEffect(() => {
     loadAvailabilities();
   }, []);
 
-  const loadAvailabilities = async (selectedDate = "") => {
+  const loadAvailabilities = async () => {
     try {
       const res = await axios.get(
         "http://localhost:8080/healthcare/provider/availability/next",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-          params: selectedDate ? { date: selectedDate } : {},
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setAvailabilities(res.data);
     } catch (err) {
-      console.error("Availability API error:", err);
-
-      if (err.response) {
-        console.error("Status:", err.response.status);
-        console.error("Data:", err.response.data);
-        setMessage(err.response.data?.message || "Server error");
-      } else {
-        setMessage("Network error or server not reachable");
-      }
+      setVariant("danger");
+      setMessage("Failed to load availabilities");
     }
   };
-  
-  useEffect(() => {
-    loadAvailabilities();
-  }, []);
 
-
+  /* ---------- FORM HANDLING ---------- */
   const handleChange = (e) => {
+    // if user types after editing → treat as NEW
+    if (editing) setEditing(null);
+
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -67,8 +66,18 @@ const CreateAvailability = () => {
     setEditing(null);
   };
 
+  /* ---------- ADD / UPDATE ---------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setMessage("");
+
+    // UI validation
+    if (form.startTime >= form.endTime) {
+      setVariant("danger");
+      setMessage("End time must be after start time");
+      return;
+    }
+
     try {
       if (editing) {
         await axios.put(
@@ -76,6 +85,7 @@ const CreateAvailability = () => {
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
+        setVariant("success");
         setMessage("Availability updated successfully");
       } else {
         await axios.post(
@@ -83,16 +93,26 @@ const CreateAvailability = () => {
           form,
           { headers: { Authorization: `Bearer ${token}` } }
         );
-        setMessage("Availability added successfully");
+        setVariant("success");
+        setMessage(
+          "Availability added successfully. Only future availabilities are shown."
+        );
       }
 
       resetForm();
       loadAvailabilities();
     } catch (err) {
-      setMessage(err.response?.data || "Operation failed");
+      setVariant("danger");
+      setMessage(
+        getErrorMessage(
+          err,
+          "Availability overlaps with existing availability"
+        )
+      );
     }
   };
 
+  /* ---------- GENERATE SLOTS ---------- */
   const generateSlots = async (id) => {
     try {
       await axios.post(
@@ -100,33 +120,37 @@ const CreateAvailability = () => {
         {},
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       navigate(`/provider/availability/${id}/slots`);
-
     } catch (err) {
       if (err.response?.status === 409) {
-        // slots already exist → still redirect
         navigate(`/provider/availability/${id}/slots`);
       } else {
-        setMessage(err.response?.data || "Slots already exist");
+        setVariant("danger");
+        setMessage("Failed to generate slots");
       }
     }
   };
 
-
+  /* ---------- DELETE ---------- */
   const deleteAvailability = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this availability?"))
+      return;
+
     try {
       await axios.delete(
         `http://localhost:8080/healthcare/provider/availability/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setMessage("Availability deleted");
+      setVariant("success");
+      setMessage("Availability deleted successfully");
       loadAvailabilities();
     } catch (err) {
-      setMessage(err.response?.data || "Cannot delete availability");
+      setVariant("danger");
+      setMessage(getErrorMessage(err, "Cannot delete availability"));
     }
   };
 
+  /* ---------- EDIT ---------- */
   const startEdit = (a) => {
     setEditing(a.id);
     setForm({
@@ -138,27 +162,56 @@ const CreateAvailability = () => {
     });
   };
 
-  /* ---------------- UI ---------------- */
+  /* ---------- UI ---------- */
   return (
     <>
-      <ProviderHeader/>
+      <ProviderHeader />
+
       <Container className="mt-4">
+        {/* FORM */}
         <Card className="p-4 mb-4 shadow-sm">
           <h4>{editing ? "Update Availability" : "Create Availability"}</h4>
 
-          {message && <Alert>{message}</Alert>}
+          {message && <Alert variant={variant}>{message}</Alert>}
 
           <Form onSubmit={handleSubmit} className="row g-2">
-            <h5>Date</h5>
-            <Form.Control type="date" name="date" value={form.date} onChange={handleChange} required />
-            <h5>Start Time</h5>
-            <Form.Control type="time" name="startTime" value={form.startTime} onChange={handleChange} required />
-            <h5>End Time</h5>
-            <Form.Control type="time" name="endTime" value={form.endTime} onChange={handleChange} required />
-            <h5>Slot Duration</h5>
-            <Form.Control type="number" name="slotDuration" value={form.slotDuration} onChange={handleChange} required />
-            <h5>Capacity Per Slot</h5>
-            <Form.Control type="number" name="capacityPerSlot" value={form.capacityPerSlot} onChange={handleChange} required />
+            <Form.Control
+              type="date"
+              name="date"
+              value={form.date}
+              onChange={handleChange}
+              required
+            />
+            <Form.Control
+              type="time"
+              name="startTime"
+              value={form.startTime}
+              onChange={handleChange}
+              required
+            />
+            <Form.Control
+              type="time"
+              name="endTime"
+              value={form.endTime}
+              onChange={handleChange}
+              required
+            />
+            <Form.Control
+              type="number"
+              name="slotDuration"
+              placeholder="Slot Duration (minutes)"
+              value={form.slotDuration}
+              onChange={handleChange}
+              required
+            />
+            <Form.Control
+              type="number"
+              name="capacityPerSlot"
+              placeholder="Capacity per slot"
+              value={form.capacityPerSlot}
+              onChange={handleChange}
+              required
+            />
 
             <div className="d-flex gap-2">
               <Button type="submit">
@@ -173,9 +226,9 @@ const CreateAvailability = () => {
           </Form>
         </Card>
 
-        {/* ---------------- TABLE ---------------- */}
+        {/* TABLE */}
         <Card className="p-3 shadow-sm">
-          <h5>My Availabilities</h5>
+          <h5>My Availabilities (Upcoming)</h5>
 
           <Table bordered hover responsive>
             <thead>
@@ -188,25 +241,49 @@ const CreateAvailability = () => {
               </tr>
             </thead>
             <tbody>
-              {availabilities.map((a) => (
-                <tr key={a.id}>
-                  <td>{a.date}</td>
-                  <td>{a.startTime} – {a.endTime}</td>
-                  <td>{a.slotDuration} min</td>
-                  <td>{a.capacityPerSlot}</td>
-                  <td className="text-center">
-                    <Button size="sm" className="me-2" onClick={() => generateSlots(a.id)}>
-                      Generate Slots
-                    </Button>
-                    <Button size="sm" variant="warning" className="me-2" onClick={() => startEdit(a)}>
-                      Update
-                    </Button>
-                    <Button size="sm" variant="danger" onClick={() => deleteAvailability(a.id)}>
-                      Delete
-                    </Button>
+              {availabilities.length === 0 ? (
+                <tr>
+                  <td colSpan="5" className="text-center text-muted">
+                    No future availabilities found
                   </td>
                 </tr>
-              ))}
+              ) : (
+                availabilities.map((a) => (
+                  <tr key={a.id}>
+                    <td>{a.date}</td>
+                    <td>
+                      {a.startTime} – {a.endTime}
+                    </td>
+                    <td>{a.slotDuration} min</td>
+                    <td>{a.capacityPerSlot}</td>
+                    <td className="text-center">
+                      <Button
+                        size="sm"
+                        disabled={a.slotGeneratedStatus}
+                        onClick={() => generateSlots(a.id)}
+                      >
+                        {a.slotGeneratedStatus ? "Slots Generated" : "Generate Slots"}
+                      </Button>
+
+                      <Button
+                        size="sm"
+                        variant="warning"
+                        className="me-2"
+                        onClick={() => startEdit(a)}
+                      >
+                        Update
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="danger"
+                        onClick={() => deleteAvailability(a.id)}
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </Table>
         </Card>
