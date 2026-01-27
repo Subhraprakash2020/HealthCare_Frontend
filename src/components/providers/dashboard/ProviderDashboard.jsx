@@ -1,9 +1,12 @@
 import React from "react";
+import ProviderHeader from "./ProviderHeader";
 
 function ProviderDashboard() {
   
   return (
-    <h1>Welcome to dashboard</h1>
+    <>
+      <ProviderHeader/>
+    </>
   );
 }
 
