@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { Container, Card, Button, Table, Alert } from "react-bootstrap";
 import axios from "axios";
 import ProviderHeader from "./ProviderHeader";
@@ -14,11 +14,8 @@ const ShowSlots = () => {
 
   const providerId = getProviderId();
 
-  const [selectedDate, setSelectedDate] = useState("");
-  const [slots, setSlots] = useState([]);
-  const [message, setMessage] = useState("");
-
-  const getNext7Days = () => {
+  // Memoize dates array so it doesn't recreate on every render
+  const dates = useMemo(() => {
     const days = [];
     for (let i = 0; i < 7; i++) {
       const d = new Date();
@@ -26,14 +23,23 @@ const ShowSlots = () => {
       days.push(d.toISOString().split("T")[0]);
     }
     return days;
-  };
+  }, []);
 
-  const dates = getNext7Days();
+  // Initialize state with proper initial values
+  const [selectedDate, setSelectedDate] = useState(dates[0]);
+  const [slots, setSlots] = useState([]);
+  const [message, setMessage] = useState(
+    providerId ? "" : "Provider not logged in"
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
   const loadSlots = async (date) => {
+    if (!providerId) return;
+
     setSelectedDate(date);
     setMessage("");
     setSlots([]);
+    setIsLoading(true);
 
     try {
       const res = await axios.get(
@@ -45,16 +51,18 @@ const ShowSlots = () => {
       setSlots(res.data);
     } catch (err) {
       setMessage(err.response?.data?.message || "Failed to load slots");
+    } finally {
+      setIsLoading(false);
     }
   };
 
+  // Load initial slots only when component mounts and providerId exists
   useEffect(() => {
-    if (providerId) {
+    if (providerId && dates[0]) {
       loadSlots(dates[0]);
-    } else {
-      setMessage("Provider not logged in");
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty dependency array - only run once on mount
 
   return (
     <>
@@ -69,6 +77,7 @@ const ShowSlots = () => {
                 key={date}
                 variant={date === selectedDate ? "primary" : "outline-primary"}
                 onClick={() => loadSlots(date)}
+                disabled={!providerId}
               >
                 {date}
               </Button>
@@ -80,6 +89,10 @@ const ShowSlots = () => {
           <h5>Slots for {selectedDate}</h5>
 
           {message && <Alert variant="danger">{message}</Alert>}
+
+          {isLoading && (
+            <Alert variant="info">Loading slots...</Alert>
+          )}
 
           <Table bordered hover responsive>
             <thead>

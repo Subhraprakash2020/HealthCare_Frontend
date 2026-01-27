@@ -10,16 +10,31 @@ const AvailabilityList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadAvailabilities();
-  }, []);
+    let cancelled = false;
 
-  const loadAvailabilities = async () => {
-    const res = await axios.get(
-      "http://localhost:8080/healthcare/provider/availability",
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setAvailabilities(res.data);
-  };
+    const fetchAvailabilities = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/healthcare/provider/availability",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (!cancelled) {
+          setAvailabilities(res.data);
+        }
+      } catch {
+        if (!cancelled) {
+          setMessage("Failed to load availabilities");
+        }
+      }
+    };
+
+    fetchAvailabilities();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   const generateSlots = async (availabilityId) => {
     try {
@@ -30,7 +45,6 @@ const AvailabilityList = () => {
       );
 
       navigate(`/provider/availability/${availabilityId}/slots`);
-
     } catch (err) {
       if (err.response?.status === 409) {
         navigate(`/provider/availability/${availabilityId}/slots`);
@@ -55,19 +69,29 @@ const AvailabilityList = () => {
           </tr>
         </thead>
         <tbody>
-          {availabilities.map((a) => (
-            <tr key={a.id}>
-              <td>{a.date}</td>
-              <td>{a.startTime} – {a.endTime}</td>
-              <td>{a.slotDuration} min</td>
-              <td>{a.capacityPerSlot}</td>
-              <td>
-                <Button size="sm" onClick={() => generateSlots(a.id)}>
-                  Generate Slots
-                </Button>
+          {availabilities.length === 0 ? (
+            <tr>
+              <td colSpan="5" className="text-center text-muted">
+                No availabilities found
               </td>
             </tr>
-          ))}
+          ) : (
+            availabilities.map((a) => (
+              <tr key={a.id}>
+                <td>{a.date}</td>
+                <td>
+                  {a.startTime} – {a.endTime}
+                </td>
+                <td>{a.slotDuration} min</td>
+                <td>{a.capacityPerSlot}</td>
+                <td>
+                  <Button size="sm" onClick={() => generateSlots(a.id)}>
+                    Generate Slots
+                  </Button>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </Table>
     </Container>

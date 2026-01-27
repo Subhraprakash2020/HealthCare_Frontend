@@ -8,18 +8,33 @@ const ProviderAvailabilityList = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    fetchAvailabilities();
-  }, []);
+    let cancelled = false;
 
-  const fetchAvailabilities = async () => {
-    const res = await axios.get(
-      "http://localhost:8080/healthcare/provider/availability",
-      {
-        headers: { Authorization: `Bearer ${token}` },
+    const fetchAvailabilities = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/healthcare/provider/availability",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!cancelled) {
+          setAvailabilities(res.data);
+        }
+      } catch {
+        if (!cancelled) {
+          setMessage("Failed to load availabilities");
+        }
       }
-    );
-    setAvailabilities(res.data);
-  };
+    };
+
+    fetchAvailabilities();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   const generateSlots = async (availabilityId) => {
     try {
@@ -30,16 +45,28 @@ const ProviderAvailabilityList = () => {
       );
       setMessage("Slots generated successfully");
     } catch (err) {
-      setMessage(err.response?.data || "Error generating slots");
+      setMessage(err.response?.data?.message || "Error generating slots");
     }
   };
 
   const deleteSlots = async (availabilityId) => {
-    await axios.delete(
-      `http://localhost:8080/healthcare/provider/slot/delete/${availabilityId}`,
-      { headers: { Authorization: `Bearer ${token}` } }
-    );
-    setMessage("Slots deleted");
+    try {
+      await axios.delete(
+        `http://localhost:8080/healthcare/provider/slot/delete/${availabilityId}`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setMessage("Slots deleted");
+
+      const res = await axios.get(
+        "http://localhost:8080/healthcare/provider/availability",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      setAvailabilities(res.data);
+    } catch {
+      setMessage("Failed to delete slots");
+    }
   };
 
   return (
@@ -61,33 +88,44 @@ const ProviderAvailabilityList = () => {
           </thead>
 
           <tbody>
-            {availabilities.map((a) => (
-              <tr key={a.id}>
-                <td>{a.date}</td>
-                <td>
-                  {a.startTime} - {a.endTime}
-                </td>
-                <td>{a.slotDuration} min</td>
-                <td>{a.capacityPerSlot}</td>
-                <td>
-                  <Button
-                    size="sm"
-                    className="me-2"
-                    onClick={() => generateSlots(a.id)}
-                  >
-                    Generate Slots
-                  </Button>
-
-                  <Button
-                    size="sm"
-                    variant="danger"
-                    onClick={() => deleteSlots(a.id)}
-                  >
-                    Delete Slots
-                  </Button>
+            {availabilities.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="text-center text-muted">
+                  No availabilities found
                 </td>
               </tr>
-            ))}
+            ) : (
+              availabilities.map((a) => (
+                <tr key={a.id}>
+                  <td>{a.date}</td>
+                  <td>
+                    {a.startTime} - {a.endTime}
+                  </td>
+                  <td>{a.slotDuration} min</td>
+                  <td>{a.capacityPerSlot}</td>
+                  <td>
+                    <Button
+                      size="sm"
+                      className="me-2"
+                      disabled={a.slotGeneratedStatus}
+                      onClick={() => generateSlots(a.id)}
+                    >
+                      {a.slotGeneratedStatus
+                        ? "Slots Generated"
+                        : "Generate Slots"}
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="danger"
+                      onClick={() => deleteSlots(a.id)}
+                    >
+                      Delete Slots
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </Table>
       </Card>

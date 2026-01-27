@@ -29,29 +29,37 @@ const CreateAvailability = () => {
     return fallback;
   };
 
-  /* ---------- LOAD AVAILABILITIES ---------- */
+  /* ---------- LOAD AVAILABILITIES (EFFECT-SAFE) ---------- */
   useEffect(() => {
-    loadAvailabilities();
-  }, []);
+    let cancelled = false;
 
-  const loadAvailabilities = async () => {
-    try {
-      const res = await axios.get(
-        "http://localhost:8080/healthcare/provider/availability/next",
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      setAvailabilities(res.data);
-    } catch (err) {
-      setVariant("danger");
-      setMessage("Failed to load availabilities");
-    }
-  };
+    const fetchAvailabilities = async () => {
+      try {
+        const res = await axios.get(
+          "http://localhost:8080/healthcare/provider/availability/next",
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (!cancelled) {
+          setAvailabilities(res.data);
+        }
+      } catch {
+        if (!cancelled) {
+          setVariant("danger");
+          setMessage("Failed to load availabilities");
+        }
+      }
+    };
+
+    fetchAvailabilities();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [token]);
 
   /* ---------- FORM HANDLING ---------- */
   const handleChange = (e) => {
-    // if user types after editing → treat as NEW
     if (editing) setEditing(null);
-
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
@@ -71,7 +79,6 @@ const CreateAvailability = () => {
     e.preventDefault();
     setMessage("");
 
-    // UI validation
     if (form.startTime >= form.endTime) {
       setVariant("danger");
       setMessage("End time must be after start time");
@@ -100,14 +107,17 @@ const CreateAvailability = () => {
       }
 
       resetForm();
-      loadAvailabilities();
+
+      // reload list
+      const res = await axios.get(
+        "http://localhost:8080/healthcare/provider/availability/next",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setAvailabilities(res.data);
     } catch (err) {
       setVariant("danger");
       setMessage(
-        getErrorMessage(
-          err,
-          "Availability overlaps with existing availability"
-        )
+        getErrorMessage(err, "Availability overlaps with existing availability")
       );
     }
   };
@@ -143,7 +153,12 @@ const CreateAvailability = () => {
       );
       setVariant("success");
       setMessage("Availability deleted successfully");
-      loadAvailabilities();
+
+      const res = await axios.get(
+        "http://localhost:8080/healthcare/provider/availability/next",
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setAvailabilities(res.data);
     } catch (err) {
       setVariant("danger");
       setMessage(getErrorMessage(err, "Cannot delete availability"));
@@ -175,48 +190,14 @@ const CreateAvailability = () => {
           {message && <Alert variant={variant}>{message}</Alert>}
 
           <Form onSubmit={handleSubmit} className="row g-2">
-            <Form.Control
-              type="date"
-              name="date"
-              value={form.date}
-              onChange={handleChange}
-              required
-            />
-            <Form.Control
-              type="time"
-              name="startTime"
-              value={form.startTime}
-              onChange={handleChange}
-              required
-            />
-            <Form.Control
-              type="time"
-              name="endTime"
-              value={form.endTime}
-              onChange={handleChange}
-              required
-            />
-            <Form.Control
-              type="number"
-              name="slotDuration"
-              placeholder="Slot Duration (minutes)"
-              value={form.slotDuration}
-              onChange={handleChange}
-              required
-            />
-            <Form.Control
-              type="number"
-              name="capacityPerSlot"
-              placeholder="Capacity per slot"
-              value={form.capacityPerSlot}
-              onChange={handleChange}
-              required
-            />
+            <Form.Control type="date" name="date" value={form.date} onChange={handleChange} required />
+            <Form.Control type="time" name="startTime" value={form.startTime} onChange={handleChange} required />
+            <Form.Control type="time" name="endTime" value={form.endTime} onChange={handleChange} required />
+            <Form.Control type="number" name="slotDuration" placeholder="Slot Duration (minutes)" value={form.slotDuration} onChange={handleChange} required />
+            <Form.Control type="number" name="capacityPerSlot" placeholder="Capacity per slot" value={form.capacityPerSlot} onChange={handleChange} required />
 
             <div className="d-flex gap-2">
-              <Button type="submit">
-                {editing ? "Update" : "Add"}
-              </Button>
+              <Button type="submit">{editing ? "Update" : "Add"}</Button>
               {editing && (
                 <Button variant="secondary" onClick={resetForm}>
                   Cancel
@@ -251,9 +232,7 @@ const CreateAvailability = () => {
                 availabilities.map((a) => (
                   <tr key={a.id}>
                     <td>{a.date}</td>
-                    <td>
-                      {a.startTime} – {a.endTime}
-                    </td>
+                    <td>{a.startTime} – {a.endTime}</td>
                     <td>{a.slotDuration} min</td>
                     <td>{a.capacityPerSlot}</td>
                     <td className="text-center">
@@ -263,16 +242,14 @@ const CreateAvailability = () => {
                         onClick={() => generateSlots(a.id)}
                       >
                         {a.slotGeneratedStatus ? "Slots Generated" : "Generate Slots"}
-                      </Button>
-
+                      </Button>{" "}
                       <Button
                         size="sm"
                         variant="warning"
-                        className="me-2"
                         onClick={() => startEdit(a)}
                       >
                         Update
-                      </Button>
+                      </Button>{" "}
                       <Button
                         size="sm"
                         variant="danger"
