@@ -23,3 +23,17 @@
 .provider-nav-link:hover {
   color: #5c3e98;
 }
+
+.profile-avatar-provider {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border: 2px solid #5c3e98;
+}
+
+.provider-profile-name {
+  color: #000;
+  font-weight: 500;
+  line-height: 1;
+
+}
