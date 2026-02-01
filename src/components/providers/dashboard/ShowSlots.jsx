@@ -75,7 +75,7 @@ const ShowSlots = () => {
             {dates.map((date) => (
               <Button
                 key={date}
-                variant={date === selectedDate ? "primary" : "outline-primary"}
+                className={date === selectedDate ? "btn-custom-primary" : "btn-custom-outline"}
                 onClick={() => loadSlots(date)}
                 disabled={!providerId}
               >

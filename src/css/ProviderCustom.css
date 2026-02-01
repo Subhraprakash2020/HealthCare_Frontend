@@ -23,3 +23,76 @@
 .provider-nav-link:hover {
   color: #5c3e98;
 }
+
+.profile-avatar-provider {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border: 2px solid #5c3e98;
+}
+
+.provider-profile-name {
+  color: #000;
+  font-weight: 500;
+  line-height: 1;
+}
+
+.provider-card-background{
+  background: #5c3e98;
+  color: #fff;
+}
+
+.btn-custom-primary {
+  background-color: #5c3e98;
+  border-color: #5c3e98;
+  color: #fff;
+}
+
+.btn-custom-primary:hover,
+.btn-custom-primary:focus {
+  background-color: #4b327d;
+  border-color: #4b327d;
+}
+
+.btn-custom-outline {
+  color: #5c3e98;
+  border-color: #5c3e98;
+  background-color: transparent;
+}
+
+.btn-custom-outline:hover,
+.btn-custom-outline:focus {
+  background-color: #5c3e98;
+  color: #fff;
+}
+
+.login-container {
+  background-color: #f8f9fa;
+}
+
+.provider-form-card {
+  border-radius: 12px;
+}
+
+.right-panel {
+  background:   
+    url("../components/providers/Images/login-doctor.png");
+  filter: brightness(0.8);
+  background-size: cover;
+  
+}
+
+.provider-section-title {
+  font-weight: 600;
+  color: #5c3e98;
+  margin-bottom: 10px;
+}
+
+.submit-btn {
+  background-color: #5c3e98;
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: #4b327c;
+}
