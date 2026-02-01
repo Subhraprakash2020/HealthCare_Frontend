@@ -125,6 +125,11 @@ const ProviderHeader = () => {
                 Upload my profile
               </NavDropdown.Item>
 
+              <NavDropdown.Item as={Link} to="/provider/additionalInfo">
+                <i className="bi bi-person-fill me-2"></i>
+                Complete your profile
+              </NavDropdown.Item>
+
               <NavDropdown.Divider />
 
               <NavDropdown.Item

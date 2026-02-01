@@ -8,6 +8,7 @@ import CreateAvailability from "../components/providers/dashboard/CreateAvailabi
 import ProviderAvailabilityList from "../components/providers/dashboard/ProviderAvailabilityList";
 import ProviderSlotsPage from "../components/providers/dashboard/ProviderSlotsPage";
 import ShowSlots from "../components/providers/dashboard/ShowSlots";
+import ProviderAdditionalInfo from "../components/providers/dashboard/ProviderAdditionalInfo";
 
 const ProviderRoutes = () => (
   <Routes>
@@ -50,6 +51,15 @@ const ProviderRoutes = () => (
       element={
         <ProviderProtectedRoute>
           <ProviderSlotsPage />
+        </ProviderProtectedRoute>
+      }
+    />
+
+    <Route
+      path="additionalInfo"
+      element={
+        <ProviderProtectedRoute>
+          <ProviderAdditionalInfo />
         </ProviderProtectedRoute>
       }
     />

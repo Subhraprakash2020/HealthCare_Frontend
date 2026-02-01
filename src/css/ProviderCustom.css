@@ -35,5 +35,66 @@
   color: #000;
   font-weight: 500;
   line-height: 1;
+}
 
+.provider-card-background{
+  background: #5c3e98;
+  color: #fff;
+}
+
+.btn-custom-primary {
+  background-color: #5c3e98;
+  border-color: #5c3e98;
+  color: #fff;
+}
+
+.btn-custom-primary:hover,
+.btn-custom-primary:focus {
+  background-color: #4b327d;
+  border-color: #4b327d;
+}
+
+.btn-custom-outline {
+  color: #5c3e98;
+  border-color: #5c3e98;
+  background-color: transparent;
+}
+
+.btn-custom-outline:hover,
+.btn-custom-outline:focus {
+  background-color: #5c3e98;
+  color: #fff;
+}
+
+.login-container {
+  background-color: #f8f9fa;
+}
+
+.provider-form-card {
+  border-radius: 12px;
+}
+
+.right-panel {
+  background: linear-gradient(
+      rgba(92, 62, 152, 0.75),
+      rgba(92, 62, 152, 0.75)
+    ),
+    url("/assets/provider-bg.jpg"); /* optional image */
+  background-size: cover;
+  background-position: center;
+}
+
+.provider-section-title {
+  font-weight: 600;
+  color: #5c3e98;
+  margin-bottom: 10px;
+}
+
+.submit-btn {
+  background-color: #5c3e98;
+  border: none;
+}
+
+.submit-btn:hover {
+  background-color: #4b327c;
 }
