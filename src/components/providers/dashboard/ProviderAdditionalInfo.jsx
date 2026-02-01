@@ -24,7 +24,6 @@ function ProviderAdditionalInfo() {
   const [practicesOptions, setPracticesOptions] = useState([]);
   const [treatmentLevels, setTreatmentLevels] = useState([]);
 
-  /* ---------------- ADDRESS LIST ---------------- */
   const [addresses, setAddresses] = useState([
     { address: "", city: "", state: "", zip: "" },
   ]);
@@ -39,9 +38,9 @@ function ProviderAdditionalInfo() {
     setAddresses(updated);
   };
 
-  const addAddress = () => {
-    setAddresses([...addresses, { address: "", city: "", state: "", zip: "" }]);
-  };
+  // const addAddress = () => {
+  //   setAddresses([...addresses, { address: "", city: "", state: "", zip: "" }]);
+  // };
 
   const removeAddress = (index) => {
     if (addresses.length === 1) return;
@@ -92,7 +91,6 @@ function ProviderAdditionalInfo() {
       <Container className="my-4">
         <Form onSubmit={handleSubmit}>
 
-          {/* ================= PROVIDER DETAILS ================= */}
           <Card className="mb-4 shadow-sm">
             <Card.Header className="provider-card-background">
               Provider Details
@@ -115,17 +113,17 @@ function ProviderAdditionalInfo() {
                   <Form.Group className="mb-3">
                     <Form.Label>Practices</Form.Label>
                     <Form.Select
-                        name="practices"
-                        value={details.practices}
-                        onChange={handleDetailsChange}
-                      >
-                        <option value="">Select Practice</option>
-                        {practicesOptions.map((p) => (
-                          <option key={p} value={p}>
-                            {p.replaceAll("_", " ")}
-                          </option>
-                        ))}
-                      </Form.Select>
+                      name="practices"
+                      value={details.practices}
+                      onChange={handleDetailsChange}
+                    >
+                      <option value="">Select Practice</option>
+                      {practicesOptions.map((p) => (
+                        <option key={p} value={p}>
+                          {p.replaceAll("_", " ")}
+                        </option>
+                      ))}
+                    </Form.Select>
                   </Form.Group>
                 </Col>
               </Row>
@@ -187,7 +185,6 @@ function ProviderAdditionalInfo() {
             </Card.Body>
           </Card>
 
-          {/* ================= PRACTICE ADDRESS ================= */}
           <Card className="shadow-sm">
             <Card.Header className="provider-card-background">
               Practice Street Address
@@ -197,7 +194,6 @@ function ProviderAdditionalInfo() {
               {addresses.map((addr, index) => (
                 <div key={index} className="border rounded p-3 mb-3 position-relative">
 
-                  {/* Remove Button */}
                   {addresses.length > 1 && (
                     <Button
                       variant="outline-danger"
@@ -270,7 +266,6 @@ function ProviderAdditionalInfo() {
             </Card.Body>
           </Card>
 
-          {/* ================= SUBMIT ================= */}
           <div className="text-end mt-4">
             <Button
               type="submit"

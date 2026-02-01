@@ -75,13 +75,11 @@
 }
 
 .right-panel {
-  background: linear-gradient(
-      rgba(92, 62, 152, 0.75),
-      rgba(92, 62, 152, 0.75)
-    ),
-    url("/assets/provider-bg.jpg"); /* optional image */
+  background:   
+    url("../components/providers/Images/login-doctor.png");
+  filter: brightness(0.8);
   background-size: cover;
-  background-position: center;
+  
 }
 
 .provider-section-title {

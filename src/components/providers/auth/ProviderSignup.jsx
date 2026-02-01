@@ -70,7 +70,7 @@ const ProviderSignup = () => {
                         />
                       </Col>
                       <Col md={12}>
-                      <div className="provider-section-title">Last Name</div>
+                        <div className="provider-section-title">Last Name</div>
                         <Form.Control
                           name="lastName"
                           placeholder="Last Name"
@@ -83,7 +83,7 @@ const ProviderSignup = () => {
 
                     <Row className="mb-3">
                       <Col md={12}>
-                      <div className="provider-section-title">Email</div>
+                        <div className="provider-section-title">Email</div>
                         <Form.Control
                           type="email"
                           name="email"
@@ -94,7 +94,7 @@ const ProviderSignup = () => {
                         />
                       </Col>
                       <Col md={12}>
-                      <div className="provider-section-title">Phone</div>
+                        <div className="provider-section-title">Phone</div>
                         <Form.Control
                           name="phone"
                           placeholder="Phone No."
@@ -115,7 +115,7 @@ const ProviderSignup = () => {
                         />
                       </Col> */}
                       <Col md={12}>
-                      <div className="provider-section-title">Gender</div>
+                        <div className="provider-section-title">Gender</div>
                         <Form.Select
                           name="gender"
                           value={form.gender}
@@ -133,7 +133,7 @@ const ProviderSignup = () => {
 
                   {/* SECURITY */}
                   <div className="section">
-                    <div className="provider-section-title">SECURITY</div>
+                    <div className="provider-section-title">Password</div>
                     <Form.Control
                       type="password"
                       name="passWord"
