@@ -489,8 +489,54 @@ body {
 }
 
 .slot-selected {
-  background-color: #5ab800 !important; /* Bootstrap success */
+  background-color: #5ab800 !important;
   border-color: #5ab800 !important;
   color: #ffffff !important;
   box-shadow: 0 0 0 0.15rem rgba(25, 135, 84, 0.4);
+}
+
+.provider-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 25px;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: right;
+  margin: 30px 0;
+}
+
+.pagination-btn {
+  border: 1px solid #e0e0e0 !important;
+  background-color: #fff !important;
+  color: #5ab800 !important;
+  padding: 8px 14px;
+  font-size: 14px;
+  border-radius: 0 !important;
+  min-width: 40px;
+}
+
+.pagination-btn:first-child {
+  border-radius: 6px 0 0 6px !important;
+}
+
+.pagination-btn:last-child {
+  border-radius: 0 6px 6px 0 !important;
+}
+
+.active-page {
+  background-color: #5ab800 !important;
+  color: #fff !important;
+  border-color: #5ab800 !important;
+}
+
+.pagination-btn:hover:not(:disabled):not(.active-page) {
+  background-color: #f4ffe6 !important;
+}
+
+.pagination-btn:disabled {
+  color: #bdbdbd !important;
+  background-color: #fafafa !important;
+  cursor: not-allowed;
 }
