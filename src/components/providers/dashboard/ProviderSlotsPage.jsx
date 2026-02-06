@@ -3,6 +3,7 @@ import { Container, Card, Badge } from "react-bootstrap";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import ProviderHeader from "./ProviderHeader";
+import "../../../css/ProviderCustom.css"
 
 const ProviderSlotsPage = () => {
   const { availabilityId } = useParams();
@@ -59,14 +60,16 @@ const ProviderSlotsPage = () => {
                 {[...Array(slot.maxCapacity)].map((_, i) => (
                   <Badge
                     key={i}
-                    bg={i < slot.bookedCount ? "secondary" : "success"}
-                    className="p-3"
+                    className={`p-3 ${
+                      i < slot.bookedCount ? "bg-secondary" : "provider-scuess"
+                    }`}
                     style={{ cursor: "pointer" }}
                   >
                     {i + 1}
                   </Badge>
                 ))}
               </div>
+
 
               <small className="text-muted mt-2">
                 Available: {slot.maxCapacity - slot.bookedCount} /{" "}

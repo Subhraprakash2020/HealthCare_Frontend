@@ -96,3 +96,9 @@
 .submit-btn:hover {
   background-color: #4b327c;
 }
+
+.provider-scuess {
+  background-color: #5c3e98 !important;
+  color: #fff;
+}
+
