@@ -102,3 +102,47 @@
   color: #fff;
 }
 
+.provider-profile-page {
+  min-height: calc(100vh - 88px);
+}
+
+.provider-profile-card {
+  border: 0;
+  border-radius: 18px;
+}
+
+.provider-profile-loading {
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.provider-profile-avatar-large {
+  width: 140px;
+  height: 140px;
+  object-fit: cover;
+  border: 4px solid #ece6fb;
+}
+
+.provider-profile-field {
+  height: 100%;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: #faf8ff;
+  border: 1px solid #ece6fb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.provider-profile-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #5c3e98;
+}
+
+.provider-profile-value {
+  color: #1f1633;
+  word-break: break-word;
+}
