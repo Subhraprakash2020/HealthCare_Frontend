@@ -1,26 +1,37 @@
-
-import React from 'react';
-import { Navbar, Container, Nav, NavDropdown, Button } from 'react-bootstrap';
-import { Link, useLocation } from 'react-router-dom';
-import '../../../css/custom.css';
+import React from "react";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Header() {
-  const location = useLocation();
-  const signInClassName  = location.pathname === '/patient/signin' ? 'btn-custom-green' : 'btn-outline-custom-green';
-  const signUpClassName  = location.pathname === '/patient/signup' ? 'btn-custom-green' : 'btn-outline-custom-green';
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar expand="lg" className="healthcare-navbar sticky-top">
       <Container>
-        <Navbar.Brand as={Link} to="/">Your Brand</Navbar.Brand>
-        <div className="ms-auto me-3">
-          <Link to="/" className="text-white fs-4">
-            <i className="fa-solid fa-house"></i>
-          </Link>
-        </div>
-        <Navbar.Collapse id="basic-navbar-nav">
-          <div className="ms-auto">
-            <Button as = {Link} to = "/patient/signin" className={`me-2 ${signInClassName}`} variant="custom">Sign In</Button>
-            <Button as = {Link} to = "/patient/signup" className={signUpClassName} variant="custom">Sign Up</Button>
+        <Navbar.Brand as={Link} to="/" className="healthcare-brand">
+          <span className="brand-mark">
+            <i className="bi bi-plus-lg"></i>
+          </span>
+          <div>
+            <strong>HealthCare+</strong>
+            <span>Modern patient care</span>
+          </div>
+        </Navbar.Brand>
+
+        <Navbar.Toggle aria-controls="home-navbar-nav" />
+
+        <Navbar.Collapse id="home-navbar-nav">
+          <Nav className="mx-auto healthcare-nav-links">
+            <Nav.Link href="#services">Services</Nav.Link>
+            <Nav.Link href="#doctors">Doctors</Nav.Link>
+            <Nav.Link href="#testimonials">Testimonials</Nav.Link>
+          </Nav>
+
+          <div className="healthcare-nav-actions">
+            <Button as={Link} to="/patient/signin" className="nav-btn-outline">
+              Sign In
+            </Button>
+            <Button as={Link} to="/patient/signup" className="nav-btn-solid">
+              Sign Up
+            </Button>
           </div>
         </Navbar.Collapse>
       </Container>
