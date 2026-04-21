@@ -111,6 +111,20 @@
   border-radius: 18px;
 }
 
+.provider-profile-top-card {
+  overflow: hidden;
+}
+
+.provider-profile-top-layout {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.provider-profile-top-content {
+  min-width: 0;
+}
+
 .provider-profile-loading {
   min-height: 50vh;
   display: flex;
@@ -145,4 +159,17 @@
 .provider-profile-value {
   color: #1f1633;
   word-break: break-word;
+}
+
+.provider-profile-email {
+  color: #5b6472;
+  font-size: 1rem;
+  word-break: break-word;
+}
+
+@media (max-width: 767.98px) {
+  .provider-profile-top-layout {
+    flex-direction: column;
+    text-align: center;
+  }
 }

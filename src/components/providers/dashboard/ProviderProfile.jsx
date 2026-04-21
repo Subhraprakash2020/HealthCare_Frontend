@@ -204,7 +204,9 @@ function ProviderProfile() {
     };
   }, [token, setProfileImage, setProfileName, setProviderProfile]);
 
-  const detailEntries = buildDisplayFields(providerProfile);
+  const detailEntries = buildDisplayFields(providerProfile).filter(
+    (field) => field.key !== "fullName" && field.key !== "email"
+  );
 
   return (
     <>
@@ -218,54 +220,54 @@ function ProviderProfile() {
         ) : error ? (
           <Alert variant="danger">{error}</Alert>
         ) : (
-          <Row className="g-4">
-            <Col lg={4}>
-              <Card className="provider-profile-card shadow-sm">
-                <Card.Body className="text-center">
+          <>
+            <Card className="provider-profile-card provider-profile-top-card shadow-sm mb-4">
+              <Card.Body>
+                <div className="provider-profile-top-layout">
                   <RBImage
                     src={profileImage || PROFILE_IMAGE_FALLBACK}
                     alt={profileName || "Provider"}
                     roundedCircle
                     className="provider-profile-avatar-large"
                   />
-                  <h3 className="mt-3 mb-1">{profileName || "Provider"}</h3>
-                  <p className="text-muted mb-0">
-                    {providerProfile?.provider?.email || providerProfile?.email || "No email available"}
-                  </p>
-                </Card.Body>
-              </Card>
-            </Col>
+                  <div className="provider-profile-top-content">
+                    <h3 className="mb-2">{profileName || "Provider"}</h3>
+                    <p className="provider-profile-email mb-0">
+                      {providerProfile?.provider?.email || providerProfile?.email || "No email available"}
+                    </p>
+                  </div>
+                </div>
+              </Card.Body>
+            </Card>
 
-            <Col lg={8}>
-              <Card className="provider-profile-card shadow-sm">
-                <Card.Header className="provider-card-background">
-                  My Profile
-                </Card.Header>
-                <Card.Body>
-                  <Row className="g-3">
-                    {detailEntries.length === 0 ? (
-                      <Col xs={12}>
-                        <p className="mb-0">No provider details available.</p>
+            <Card className="provider-profile-card shadow-sm">
+              <Card.Header className="provider-card-background">
+                Provider Details
+              </Card.Header>
+              <Card.Body>
+                <Row className="g-3">
+                  {detailEntries.length === 0 ? (
+                    <Col xs={12}>
+                      <p className="mb-0">No provider details available.</p>
+                    </Col>
+                  ) : (
+                    detailEntries.map((field) => (
+                      <Col md={6} key={field.key}>
+                        <div className="provider-profile-field">
+                          <span className="provider-profile-label">
+                            {field.label}
+                          </span>
+                          <span className="provider-profile-value">
+                            {field.value}
+                          </span>
+                        </div>
                       </Col>
-                    ) : (
-                      detailEntries.map((field) => (
-                        <Col md={6} key={field.key}>
-                          <div className="provider-profile-field">
-                            <span className="provider-profile-label">
-                              {field.label}
-                            </span>
-                            <span className="provider-profile-value">
-                              {field.value}
-                            </span>
-                          </div>
-                        </Col>
-                      ))
-                    )}
-                  </Row>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
+                    ))
+                  )}
+                </Row>
+              </Card.Body>
+            </Card>
+          </>
         )}
       </Container>
     </>
