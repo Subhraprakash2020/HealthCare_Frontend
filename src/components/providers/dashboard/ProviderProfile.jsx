@@ -16,22 +16,6 @@ import "../../../css/ProviderCustom.css";
 const PROFILE_IMAGE_FALLBACK =
   "https://cdn-icons-png.flaticon.com/512/847/847969.png";
 
-const formatValue = (value) => {
-  if (value === null || value === undefined || value === "") {
-    return "Not available";
-  }
-
-  if (Array.isArray(value)) {
-    return value.length ? value.join(", ") : "Not available";
-  }
-
-  if (typeof value === "boolean") {
-    return value ? "Yes" : "No";
-  }
-
-  return String(value);
-};
-
 const buildDisplayFields = (profile) => {
   const provider = profile?.provider || profile || {};
   const details = profile?.providerDetails || {};
