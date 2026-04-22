@@ -139,7 +139,6 @@ function SignUp() {
           </Col>
         </Row>
       </Container>
-      <Footer />
     </>
   );
 }

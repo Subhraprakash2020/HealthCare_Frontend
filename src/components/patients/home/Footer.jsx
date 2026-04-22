@@ -1,64 +1,59 @@
-import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import { FaLinkedin } from 'react-icons/fa';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faPhone } from "@fortawesome/free-solid-svg-icons";
-import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
-
+import React from "react";
+import { Col, Container, Row } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 function Footer() {
   return (
-    <footer className="bg-dark text-white pt-5 pb-4">
+    <footer className="homepage-footer">
       <Container>
-        <Row className="mb-4">
-          <Col md={6}>
-            <h5 className="text-uppercase">Your Company Name</h5>
-            <div className="contact-info">
-              <p>
-                <FontAwesomeIcon icon={faEnvelope} className="me-2 text-white" />
-                <a href="mailto:info@yourcompany.com" className="text-white ms-1">
-                  info@yourcompany.com
-                </a>
-              </p>
-
-              <p>
-                <FontAwesomeIcon icon={faPhone} className="me-2 text-white" />
-                +1 (123) 456-7890
-              </p>
-
-              <p className="d-flex align-items-center">
-                <FontAwesomeIcon icon={faLinkedin} className="me-2 test-white" />
-                <a
-                  href="https://www.linkedin.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ms-2"
-                >
-                  Visit Profile
-                </a>
-              </p>
+        <Row className="g-4">
+          <Col lg={4}>
+            <div className="footer-brand">
+              <span className="brand-mark">
+                <i className="bi bi-plus-lg"></i>
+              </span>
+              <div>
+                <strong>HealthCare+</strong>
+                <span>Trusted digital healthcare access</span>
+              </div>
             </div>
+            <p className="footer-copy">
+              Reliable appointments, specialist discovery, and coordinated patient
+              care in one responsive healthcare platform.
+            </p>
+          </Col>
 
+          <Col sm={6} lg={2}>
+            <h6>Explore</h6>
+            <div className="footer-links">
+              <a href="#services">Services</a>
+              <a href="#doctors">Doctors</a>
+              <a href="#testimonials">Testimonials</a>
+            </div>
           </Col>
-          <Col md={6}>
-            <h5 className="text-uppercase">Quick Links</h5>
-            <ul className="list-unstyled">
-              <li><Link to="/about" className="text-white">About Us</Link></li>
-              <li><Link to="/services" className="text-white">Our Services</Link></li>
-              <li><Link to="/contact" className="text-white">Contact</Link></li>
-              <li><Link to="/privacy-policy" className="text-white">Privacy Policy</Link></li>
-            </ul>
+
+          <Col sm={6} lg={3}>
+            <h6>Account</h6>
+            <div className="footer-links">
+              <Link to="/patient/signin">Sign In</Link>
+              <Link to="/patient/signup">Sign Up</Link>
+              <Link to="/provider/signin">Provider Portal</Link>
+            </div>
+          </Col>
+
+          <Col lg={3}>
+            <h6>Contact</h6>
+            <div className="footer-contact">
+              <span>support@healthcareplus.com</span>
+              <span>+91 98765 43210</span>
+              <span>Mon - Sat, 8:00 AM - 8:00 PM</span>
+            </div>
           </Col>
         </Row>
-       
-        <hr className="bg-light" />
-       
-        <Row>
-          <Col className="text-center">
-            <p className="mb-0">© {new Date().getFullYear()} Your Company Name. All Rights Reserved.</p>
-          </Col>
-        </Row>
+
+        <div className="footer-bottom">
+          <span>© {new Date().getFullYear()} HealthCare+. All rights reserved.</span>
+        </div>
       </Container>
     </footer>
   );
