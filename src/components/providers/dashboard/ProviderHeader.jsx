@@ -7,7 +7,6 @@ import "../../../css/ProviderCustom.css"
 import { ProviderProfileContext } from "./ProviderProfileContext";
 import axios from "axios";
 
-
 const ProviderHeader = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -16,6 +15,7 @@ const ProviderHeader = () => {
     setProfileImage,
     profileName,
     setProfileName,
+    setProviderProfile,
   } = useContext(ProviderProfileContext);
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -28,24 +28,32 @@ const ProviderHeader = () => {
     if (!token) return;
 
     axios
-      .get("http://localhost:8080/healthcare/provider/profile", {
+      .get("http://localhost:8080/healthcare/providers/me", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
       .then((res) => {
         if (res.data) {
-          const name = (res.data.firstName && res.data.lastName)
-            ? `${res.data.firstName} ${res.data.lastName}`
-            : res.data.firstName || res.data.lastName || "Provider";
-          setProfileName(name);
-          setProfileImage(res.data.imageUrl);
+          const provider = res.data.provider || res.data;
+          const fullName = (provider.firstName && provider.lastName)
+            ? `${provider.firstName} ${provider.lastName}`
+            : provider.firstName || provider.lastName || res.data.providerDetails?.clinicianName || "Provider";
+          setProfileImage(
+            res.data.providerProfileImage?.imageUrl ||
+            res.data.imageUrl ||
+            res.data.profileImage?.imageUrl ||
+            res.data.profileImageUrl ||
+            null
+          );
+          setProviderProfile(res.data);
+          setProfileName(fullName);
         }
       })
       .catch(() => {
         console.warn("Provider profile not loaded");
       });
-  }, [token, setProfileImage, setProfileName]);
+  }, [token, setProfileImage, setProfileName, setProviderProfile]);
 
 
 

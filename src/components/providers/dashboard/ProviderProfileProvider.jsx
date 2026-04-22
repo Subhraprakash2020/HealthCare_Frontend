@@ -5,6 +5,7 @@ import { ProviderProfileContext } from "./ProviderProfileContext";
 const ProviderProfileProvider = ({ children }) => {
   const [profileImage, setProfileImage] = useState(null);
   const [profileName, setProfileName] = useState("");
+  const [providerProfile, setProviderProfile] = useState(null);
 
   return (
     <ProviderProfileContext.Provider
@@ -13,6 +14,8 @@ const ProviderProfileProvider = ({ children }) => {
         setProfileImage,
         profileName,
         setProfileName,
+        providerProfile,
+        setProviderProfile,
       }}
     >
       {children}

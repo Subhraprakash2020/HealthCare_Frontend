@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Container,
   Card,
@@ -41,34 +41,37 @@ const ShowSlots = () => {
 
   const [showTiles, setShowTiles] = useState(false);
 
-  const loadSlots = async (date) => {
-    if (!providerId) return;
+  const loadSlots = useCallback(
+    async (date) => {
+      if (!providerId) return;
 
-    setSelectedDate(date);
-    setMessage("");
-    setSlots([]);
-    setIsLoading(true);
+      setSelectedDate(date);
+      setMessage("");
+      setSlots([]);
+      setIsLoading(true);
 
-    try {
-      const res = await axios.get(
-        `http://localhost:8080/healthcare/provider/slot/${providerId}/date/${date}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      setSlots(res.data);
-    } catch (err) {
-      setMessage(err.response?.data?.message || "Failed to load slots");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/healthcare/provider/slot/${providerId}/date/${date}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        setSlots(res.data);
+      } catch (err) {
+        setMessage(err.response?.data?.message || "Failed to load slots");
+      } finally {
+        setIsLoading(false);
+      }
+    },
+    [providerId, token]
+  );
 
   useEffect(() => {
     if (providerId && dates[0]) {
       loadSlots(dates[0]);
     }
-  }, []);
+  }, [dates, loadSlots, providerId]);
 
   return (
     <>

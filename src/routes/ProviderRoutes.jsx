@@ -9,6 +9,7 @@ import ProviderAvailabilityList from "../components/providers/dashboard/Provider
 import ProviderSlotsPage from "../components/providers/dashboard/ProviderSlotsPage";
 import ShowSlots from "../components/providers/dashboard/ShowSlots";
 import ProviderAdditionalInfo from "../components/providers/dashboard/ProviderAdditionalInfo";
+import ProviderProfile from "../components/providers/dashboard/ProviderProfile";
 
 const ProviderRoutes = () => (
   <Routes>
@@ -60,6 +61,15 @@ const ProviderRoutes = () => (
       element={
         <ProviderProtectedRoute>
           <ProviderAdditionalInfo />
+        </ProviderProtectedRoute>
+      }
+    />
+
+    <Route
+      path="profile"
+      element={
+        <ProviderProtectedRoute>
+          <ProviderProfile />
         </ProviderProtectedRoute>
       }
     />
