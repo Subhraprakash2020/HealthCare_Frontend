@@ -6,11 +6,11 @@ import {
   Col,
   Container,
   Nav,
-  Navbar,
   Row,
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import ProviderHeader from "./ProviderHeader";
 
 const summaryCards = [
   {
@@ -129,33 +129,7 @@ function StatusBadge({ status }) {
 function ProviderDashboard() {
   return (
     <div className="provider-dashboard-page">
-      <Navbar expand="lg" className="provider-dashboard-navbar py-3">
-        <Container fluid="xl">
-          <Navbar.Brand as={Link} to="/provider/dashboard" className="provider-dashboard-brand">
-            <span className="provider-dashboard-brand-icon">
-              <i className="bi bi-heart-pulse"></i>
-            </span>
-            <div>
-              <strong>Provider Dashboard</strong>
-              <span>Healthcare workspace</span>
-            </div>
-          </Navbar.Brand>
-
-          <div className="d-flex align-items-center gap-3">
-            <button type="button" className="provider-notification-btn">
-              <i className="bi bi-bell"></i>
-              <span className="provider-notification-dot"></span>
-            </button>
-            <div className="provider-dashboard-user d-none d-sm-flex">
-              <div className="provider-dashboard-user-avatar">DR</div>
-              <div>
-                <p className="mb-0 fw-semibold">Dr. Priya Sharma</p>
-                <small>General Physician</small>
-              </div>
-            </div>
-          </div>
-        </Container>
-      </Navbar>
+      <ProviderHeader />
 
       <Container fluid="xl" className="py-4">
         <Row className="g-4">
