@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   Badge,
   Button,
@@ -10,15 +10,11 @@ import {
   Table,
 } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import axios from "axios";
 import ProviderHeader from "./ProviderHeader";
 
 const summaryCards = [
-  {
-    title: "Today's Appointments",
-    value: "18",
-    detail: "4 arriving in the next hour",
-    icon: "bi-calendar2-check",
-  },
   {
     title: "Pending Requests",
     value: "6",
@@ -32,6 +28,29 @@ const summaryCards = [
     icon: "bi-people",
   },
 ];
+
+const getLocalDateString = (date = new Date()) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
+};
+
+const getAppointmentCount = (data) => {
+  if (typeof data === "number") {
+    return data;
+  }
+
+  return (
+    data?.count ??
+    data?.total ??
+    data?.appointmentsCount ??
+    data?.BookedPatientCount ??
+    data?.bookedPatientCount ??
+    0
+  );
+};
 
 const quickActions = [
   {
@@ -115,6 +134,13 @@ function SummaryCard({ title, value, detail, icon }) {
   );
 }
 
+SummaryCard.propTypes = {
+  title: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  detail: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+};
+
 function StatusBadge({ status }) {
   const statusClass =
     status === "Confirmed"
@@ -126,7 +152,59 @@ function StatusBadge({ status }) {
   return <Badge className={`provider-status-badge ${statusClass}`}>{status}</Badge>;
 }
 
+StatusBadge.propTypes = {
+  status: PropTypes.string.isRequired,
+};
+
 function ProviderDashboard() {
+  const token = localStorage.getItem("token");
+  const today = useMemo(() => getLocalDateString(), []);
+  const [todaysAppointments, setTodaysAppointments] = useState("0");
+  const [todaysAppointmentsDetail, setTodaysAppointmentsDetail] = useState(
+    `For ${today}`
+  );
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const fetchTodaysAppointments = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/healthcare/providers/booking/count?date=${today}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (!cancelled) {
+          setTodaysAppointments(String(getAppointmentCount(res.data)));
+          setTodaysAppointmentsDetail(`For ${today}`);
+        }
+      } catch {
+        if (!cancelled) {
+          setTodaysAppointments("0");
+          setTodaysAppointmentsDetail("Unable to load appointment count");
+        }
+      }
+    };
+
+    fetchTodaysAppointments();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [today, token]);
+
+  const dashboardSummaryCards = [
+    {
+      title: "Today's Appointments",
+      value: todaysAppointments,
+      detail: todaysAppointmentsDetail,
+      icon: "bi-calendar2-check",
+    },
+    ...summaryCards,
+  ];
+
   return (
     <div className="provider-dashboard-page">
       <ProviderHeader />
@@ -179,7 +257,7 @@ function ProviderDashboard() {
             </Card>
 
             <Row className="g-4 mb-4">
-              {summaryCards.map((card) => (
+              {dashboardSummaryCards.map((card) => (
                 <Col md={6} xl={4} key={card.title}>
                   <SummaryCard {...card} />
                 </Col>
@@ -192,7 +270,7 @@ function ProviderDashboard() {
                   <Card.Body className="p-0">
                     <div className="provider-dashboard-table-header">
                       <div>
-                        <h5 className="mb-1">Today's Appointments</h5>
+                        <h5 className="mb-1">Today&apos;s Appointments</h5>
                         <p className="provider-dashboard-muted mb-0">
                           Manage today’s patient schedule in one place.
                         </p>
