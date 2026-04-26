@@ -64,7 +64,7 @@ const ProviderHeader = () => {
         {/* Logo + Brand */}
         <Navbar.Brand
           as={Link}
-          to="/provider"
+          to="/provider/dashboard"
           className="d-flex align-items-center gap-2"
         >
           <RBImage
