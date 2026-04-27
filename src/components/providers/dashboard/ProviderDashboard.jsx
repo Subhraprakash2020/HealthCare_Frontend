@@ -261,8 +261,8 @@ function ProviderDashboard() {
                           Manage today’s patient schedule in one place.
                         </p>
                       </div>
-                      <Button className="provider-dashboard-primary-btn provider-dashboard-export-btn">
-                        Export List
+                      <Button as={Link} to ="/provider/appointments" className="provider-dashboard-primary-btn provider-dashboard-export-btn">
+                        Explore List
                       </Button>
                     </div>
 
