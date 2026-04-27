@@ -1,14 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import {
-  Badge,
-  Button,
-  Card,
-  Col,
-  Container,
-  Nav,
-  Row,
-  Table,
-} from "react-bootstrap";
+import {Badge, Button, Card, Col, Container, Nav, Row, Table} from "react-bootstrap";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -70,44 +61,6 @@ const quickActions = [
   },
 ];
 
-const appointments = [
-  {
-    id: 1,
-    patientName: "Sneha Patel",
-    time: "09:00 AM",
-    type: "Follow-up",
-    status: "Confirmed",
-  },
-  {
-    id: 2,
-    patientName: "Rahul Verma",
-    time: "10:15 AM",
-    type: "Consultation",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    patientName: "Ananya Roy",
-    time: "11:30 AM",
-    type: "Routine Check",
-    status: "Confirmed",
-  },
-  {
-    id: 4,
-    patientName: "Karan Mehta",
-    time: "01:00 PM",
-    type: "Video Visit",
-    status: "Completed",
-  },
-  {
-    id: 5,
-    patientName: "Priya Singh",
-    time: "03:15 PM",
-    type: "New Patient",
-    status: "Confirmed",
-  },
-];
-
 const navigationItems = [
   { label: "Dashboard", icon: "bi-grid-1x2", active: true },
   { label: "Appointments", icon: "bi-journal-medical", active: false },
@@ -163,6 +116,8 @@ function ProviderDashboard() {
   const [todaysAppointmentsDetail, setTodaysAppointmentsDetail] = useState(
     `For ${today}`
   );
+  const [appointments, setAppointments] = useState([]);
+  const [loadingAppointments, setLodingAppointments] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -204,6 +159,37 @@ function ProviderDashboard() {
     },
     ...summaryCards,
   ];
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchTodaysAppointments = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8080/healthcare/providers/booking/patients?date=${today}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        if (!cancelled) {
+          setAppointments(res.data || []);
+        }
+      } catch (error) {
+        if (!cancelled) {
+          setAppointments([]);
+        }
+      } finally {
+        if (!cancelled) {
+          setLodingAppointments(false);
+        }
+      }
+    };
+    fetchTodaysAppointments();
+    return () => {
+      cancelled = true;
+    };
+  }, [today, token]);
 
   return (
     <div className="provider-dashboard-page">
@@ -292,26 +278,53 @@ function ProviderDashboard() {
                           </tr>
                         </thead>
                         <tbody>
-                          {appointments.map((appointment) => (
-                            <tr key={appointment.id}>
-                              <td className="fw-semibold text-dark">{appointment.patientName}</td>
-                              <td>{appointment.time}</td>
-                              <td>{appointment.type}</td>
-                              <td>
-                                <StatusBadge status={appointment.status} />
-                              </td>
-                              <td>
-                                <div className="d-flex flex-wrap gap-2">
-                                  <Button size="sm" className="provider-dashboard-outline-btn">
-                                    View
-                                  </Button>
-                                  <Button size="sm" className="provider-dashboard-outline-btn">
-                                    Reschedule
-                                  </Button>
-                                </div>
+                          {loadingAppointments ? (
+                            <tr>
+                              <td colSpan="5" className="text-center py-4">
+                                Loading...
                               </td>
                             </tr>
-                          ))}
+                          ) : appointments.length === 0 ? (
+                            <tr>
+                              <td colSpan="5" className="text-center py-4">
+                                No appointments today
+                              </td>
+                            </tr>
+                          ) : (
+                            appointments.map((appointment) => (
+                              <tr key={appointment.bookingId}>
+                                <td className="fw-semibold text-dark">
+                                  {appointment.patientName}
+                                </td>
+
+                                <td>{appointment.bookingTime}</td>
+
+                                <td>{appointment.gender}</td>
+
+                                <td>
+                                  <StatusBadge status={appointment.status} />
+                                </td>
+
+                                <td>
+                                  <div className="d-flex flex-wrap gap-2">
+                                    <Button
+                                      size="sm"
+                                      className="provider-dashboard-outline-btn"
+                                    >
+                                      View
+                                    </Button>
+
+                                    <Button
+                                      size="sm"
+                                      className="provider-dashboard-outline-btn"
+                                    >
+                                      Call
+                                    </Button>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          )}
                         </tbody>
                       </Table>
                     </div>
