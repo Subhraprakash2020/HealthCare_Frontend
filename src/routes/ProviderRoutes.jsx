@@ -8,6 +8,7 @@ import CreateAvailability from "../components/providers/dashboard/CreateAvailabi
 import ProviderAvailabilityList from "../components/providers/dashboard/ProviderAvailabilityList";
 import ProviderSlotsPage from "../components/providers/dashboard/ProviderSlotsPage";
 import ShowSlots from "../components/providers/dashboard/ShowSlots";
+import ProviderAppointmentsList from "../components/providers/dashboard/ProviderAppointmentsList";
 import ProviderAdditionalInfo from "../components/providers/dashboard/ProviderAdditionalInfo";
 import ProviderProfile from "../components/providers/dashboard/ProviderProfile";
 
@@ -45,6 +46,15 @@ const ProviderRoutes = () => (
         <ProviderAvailabilityList/>
       </ProviderProtectedRoute>
     }
+    />
+
+    <Route
+      path="appointments"
+      element={
+        <ProviderProtectedRoute>
+          <ProviderAppointmentsList />
+        </ProviderProtectedRoute>
+      }
     />
 
     <Route
