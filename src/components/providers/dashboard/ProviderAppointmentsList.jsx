@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import {
   Badge,
@@ -29,9 +29,7 @@ function ProviderAppointmentsList() {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchAppointments = async (date) => {
-    setLoading(true);
-
+  const fetchAppointments = useCallback(async (date, signal) => {
     try {
       const res = await axios.get(
         `http://localhost:8080/healthcare/providers/booking/patients?date=${date}`,
@@ -39,20 +37,33 @@ function ProviderAppointmentsList() {
           headers: {
             Authorization: `Bearer ${token}`,
           },
+          signal,
         }
       );
 
-      setAppointments(res.data || []);
-    } catch (error) {
-      setAppointments([]);
+      if (!signal.aborted) {
+        setAppointments(res.data || []);
+      }
+    } catch {
+      if (!signal.aborted) {
+        setAppointments([]);
+      }
+    } finally {
+      if (!signal.aborted) {
+        setLoading(false);
+      }
     }
-
-    setLoading(false);
-  };
+  }, [token]);
 
   useEffect(() => {
-    fetchAppointments(selectedDate);
-  }, [selectedDate]);
+    const controller = new AbortController();
+
+    fetchAppointments(selectedDate, controller.signal);
+
+    return () => {
+      controller.abort();
+    };
+  }, [fetchAppointments, selectedDate]);
 
   return (
     <div className="provider-dashboard-page">
@@ -104,7 +115,10 @@ function ProviderAppointmentsList() {
                     <Form.Control
                       type="date"
                       value={selectedDate}
-                      onChange={(e) => setSelectedDate(e.target.value)}
+                      onChange={(e) => {
+                        setLoading(true);
+                        setSelectedDate(e.target.value);
+                      }}
                     />
                   </Form.Group>
                 </div>

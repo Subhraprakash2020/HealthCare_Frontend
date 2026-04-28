@@ -117,7 +117,7 @@ function ProviderDashboard() {
     `For ${today}`
   );
   const [appointments, setAppointments] = useState([]);
-  const [loadingAppointments, setLodingAppointments] = useState(true);
+  const [loadingAppointments, setLoadingAppointments] = useState(true);
 
   useEffect(() => {
     let cancelled = false;
@@ -175,13 +175,13 @@ function ProviderDashboard() {
         if (!cancelled) {
           setAppointments(res.data || []);
         }
-      } catch (error) {
+      } catch {
         if (!cancelled) {
           setAppointments([]);
         }
       } finally {
         if (!cancelled) {
-          setLodingAppointments(false);
+          setLoadingAppointments(false);
         }
       }
     };
