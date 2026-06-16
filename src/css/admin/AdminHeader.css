@@ -1,0 +1,24 @@
+.navbar {
+  min-height: 54px;
+}
+
+.navbar-brand {
+  font-size: 2rem;
+}
+
+.nav-link {
+  font-size: 14px;
+  padding: 16px 14px !important;
+}
+
+.dropdown-menu {
+  border-radius: 0;
+}
+
+.dropdown-item {
+  font-size: 14px;
+}
+
+.navbar .dropdown-toggle::after {
+    display: inline-block;
+}
