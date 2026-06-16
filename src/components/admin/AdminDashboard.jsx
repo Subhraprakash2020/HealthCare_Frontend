@@ -1,7 +1,12 @@
 import React from "react";
+import AdminHeader from "./AdminHeader";
 
 function AdminDashboard() {
-  return <div>Welcome to Admin Dashboard</div>;
+  return (
+    <>
+      <AdminHeader/>
+    </>
+  )
 }
 
 export default AdminDashboard;
