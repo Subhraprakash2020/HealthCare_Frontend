@@ -37,12 +37,13 @@ const AdminHeader = () => {
               role="button"
               data-bs-toggle="dropdown"
             >
-              Patient
+              Content
             </a>
 
             <ul className="dropdown-menu">
-              <li><a className="dropdown-item" href="#">Activity Logs</a></li>
-              <li><a className="dropdown-item" href="#">Audit Logs</a></li>
+              <li><a className="dropdown-item" href="/admin/content/AdminPatientDashboard">Patient</a></li>
+              <li><a className="dropdown-item" href="#">Provider</a></li>
+              <li><a className="dropdown-item" href="#">Admin</a></li>
             </ul>
           </li>
 
@@ -53,7 +54,7 @@ const AdminHeader = () => {
               role="button"
               data-bs-toggle="dropdown"
             >
-              Provider
+              Logs
             </a>
 
             <ul className="dropdown-menu">
@@ -69,7 +70,7 @@ const AdminHeader = () => {
               role="button"
               data-bs-toggle="dropdown"
             >
-              Admin
+              Request
             </a>
 
             <ul className="dropdown-menu">
