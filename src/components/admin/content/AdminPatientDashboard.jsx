@@ -6,6 +6,8 @@ const AdminPatientDashboard = () => {
 
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const patientPerPage = 10;
 
   const token = localStorage.getItem("adminToken");
 
@@ -38,7 +40,31 @@ const AdminPatientDashboard = () => {
     } finally {
       setLoading(false);
     }
+
+    
   };
+
+  const indexOfLastPatient = currentPage*patientPerPage;
+  const indexOfFirstPatient = indexOfLastPatient - patientPerPage;
+
+  const currentPatients = patients.slice(
+    indexOfFirstPatient,
+    indexOfLastPatient
+  )
+
+  const totalPages = Math.ceil(patients.length/patientPerPage);
+
+  const maxVisiblePages = 3;
+
+  let startPage = Math.max(
+    1, Math.min(currentPage - 1, totalPages - maxVisiblePages + 1)
+  );
+
+  let endPage =  Math.min(totalPages, startPage + maxVisiblePages - 1);
+  const pageNumbers = [];
+  for(let i = startPage; i<= endPage; i++){
+    pageNumbers.push(i);
+  }
 
   return (
     <>
@@ -74,7 +100,7 @@ const AdminPatientDashboard = () => {
             <tbody>
 
               {patients.length > 0 ? (
-                patients.map((patient) => (
+                currentPatients.map((patient) => (
 
                   <tr key={patient.id}>
 
@@ -105,6 +131,47 @@ const AdminPatientDashboard = () => {
 
           </table>
         )}
+        <nav className="mt-3">
+        <ul className="pagination justify-content-center">
+
+          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={() => setCurrentPage(currentPage - 1)}
+            >
+              Previous
+            </button>
+          </li>
+
+          {pageNumbers.map((page) => (
+            <li
+              key={page}
+              className={`page-item ${currentPage === page ? "active" : ""}`}
+            >
+              <button
+                className="page-link"
+                onClick={() => setCurrentPage(page)}
+              >
+                {page}
+              </button>
+            </li>
+          ))}
+
+          <li
+            className={`page-item ${
+              currentPage === totalPages ? "disabled" : ""
+            }`}
+          >
+            <button
+              className="page-link"
+              onClick={() => setCurrentPage(currentPage + 1)}
+            >
+              Next
+            </button>
+          </li>
+
+        </ul>
+      </nav>
 
       </div>
     </>
