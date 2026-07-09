@@ -31,8 +31,11 @@ function AdminSignIn() {
         throw new Error("Invalid credentials");
       }
 
-      const token = await response.text();
-      localStorage.setItem("adminToken", token.replace("JWT: ", ""));
+      const data = await response.json();
+      localStorage.setItem("adminToken", data.token);
+      localStorage.setItem("adminId", data.id);
+      localStorage.setItem("adminUsername", data.username);
+      localStorage.setItem("adminEmail", data.email);
 
       navigate("/admin/dashboard");
 
