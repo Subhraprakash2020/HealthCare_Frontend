@@ -93,6 +93,7 @@ const AdminPatientDashboard = () => {
                 <th>Email</th>
                 <th>Address</th>
                 <th>Status</th>
+                <th>Actions</th>
               </tr>
 
             </thead>
@@ -113,9 +114,57 @@ const AdminPatientDashboard = () => {
                     <td>{patient.email}</td>
                     <td>{patient.address}</td>
                     <td>{patient.status || "N/A"}</td>
-
+                    <td>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          window.location.href = `/admin/patient/${patient.id}`;
+                        }}
+                      >
+                        View
+                      </button>
+                      <button
+                        className="btn btn-secondary btn-sm ms-2"
+                        onClick={() => {
+                          window.location.href = `/admin/patient/edit/${patient.id}`;
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm ms-2"
+                        onClick={() => {
+                          if (
+                            window.confirm(
+                              "Are you sure you want to delete this patient?"
+                            )
+                          ) {
+                            axios
+                              .delete(
+                                `http://localhost:8080/healthcare/admin/patientsDelete/${patient.id}`,
+                                {
+                                  headers: {
+                                    Authorization: `Bearer ${token}`,
+                                  },
+                                }
+                              )
+                              .then(() => {
+                                alert("Patient deleted successfully.");
+                                fetchPatients();
+                              })
+                              .catch((error) => {
+                                console.error("Error deleting patient:", error);
+                                alert(
+                                  "An error occurred while deleting the patient."
+                                );
+                              });
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
                   </tr>
-
                 ))
               ) : (
 

@@ -42,7 +42,7 @@ const AdminHeader = () => {
 
             <ul className="dropdown-menu">
               <li><a className="dropdown-item" href="/admin/content/AdminPatientDashboard">Patient</a></li>
-              <li><a className="dropdown-item" href="#">Provider</a></li>
+              <li><a className="dropdown-item" href="/admin/content/AdminProviderDashboard">Provider</a></li>
               <li><a className="dropdown-item" href="#">Admin</a></li>
             </ul>
           </li>
