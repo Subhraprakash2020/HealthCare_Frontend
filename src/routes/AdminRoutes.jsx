@@ -3,6 +3,7 @@ import AdminSignIn from "../components/admin/AdminSignIn";
 import AdminDashboard from "../components/admin/AdminDashboard";
 import AdminProtectedRoute from "../components/admin/AdminProtectedRoute";
 import AdminPatientDashboard from "../components/admin/content/AdminPatientDashboard";
+import AdminProviderDashboard from "../components/admin/content/AdminProviderDashboard";
 
 const AdminRoutes = () => (
   <Routes>
@@ -21,6 +22,14 @@ const AdminRoutes = () => (
       element={
         <AdminProtectedRoute>
           <AdminPatientDashboard />
+        </AdminProtectedRoute>
+      }
+    />
+     <Route
+      path="content/AdminProviderDashboard"
+      element={
+        <AdminProtectedRoute>
+          <AdminProviderDashboard />
         </AdminProtectedRoute>
       }
     />
